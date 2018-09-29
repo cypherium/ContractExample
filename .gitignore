@@ -1,0 +1,79 @@
+# ---> Java
+*.class
+app.pid
+127.0.1.1.tm0.epoch
+tmlog0.log
+tmlog.lck
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+.mvn
+mvnw
+mvnw.cmd
+
+# Package Files #
+.transaction-logs/
+*.jar
+*.war
+*.ear
+.idea/*
+*.iml
+target
+logs
+
+# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+hs_err_pid*
+
+*.lck
+*.lgo
+*.epoch
+
+.project
+.classpath
+.settings
+.metadata
+.launch
+org.eclipse.*
+
+# Numerous always-ignore extensions
+*.bak
+*.patch
+*.diff
+*.err
+
+# temp file for git conflict merging
+*.orig
+*.log
+npm-debug.log.*
+*.rej
+*.swo
+*.swp
+*.zip
+*.vi
+*~
+*.sass-cache
+*.tmp.html
+*.dump
+
+# OS or Editor folders
+.DS_Store
+._*
+.cache
+.project
+.settings
+.tmproj
+*.esproj
+*.sublime-project
+*.sublime-workspace
+nbproject
+thumbs.db
+*.iml
+
+# Folders to ignore
+.hg
+.svn
+.CVS
+.idea
+node_modules/
+jscoverage_lib/
+bower_components/
+dist/
