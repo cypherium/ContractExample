@@ -7,7 +7,7 @@ public class HelloWorld {
         Cypnet.setTokenInfo("Hello", "Hello world", totalSupply, "");
         //把发行的代币全都给合约创建者
         Cypnet.changeBalance("caller", totalSupply);
-        System.out.println(“Hello”);
+        System.out.println("Hello");
     }
 
     public static String transfer(String _to, long _value) {
