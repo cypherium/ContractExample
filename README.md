@@ -1,7 +1,7 @@
 
 <div align="center">
 
-![](https://github.com/cypherium/ContractExample/raw/master/logo.jpeg)
+![](https://github.com/cypherium/ContractExample/blob/master/cypher-logo-black.png)
 
 <br/>
 
