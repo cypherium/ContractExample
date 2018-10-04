@@ -1,8 +1,8 @@
 <div align="center">
 
-<img src="https://github.com/cypherium/ContractExample/blob/master/cypher-logo-black.png" width="400" />
+<img src="https://github.com/cypherium/ContractExample/blob/master/cypher-logo-black.png" width="400" />  
 
-<br/>
+<br/><br/><br/>
 
 🏆 [特性](#features) | 🚀 [快速开始](#quick-start) | 🏖 [性能测试](#performance-test) | 📈 [更新记录](#changelog) | 📞️ [联系作者](#contact-author) | 📖 [wiki](https://github.com/cypherium/ContractExample/wiki/Cypherium-Java-smart-contract-programming-guide-zh) | 🇺🇸 [English](https://github.com/cypherium/ContractExample/blob/master/README.md) 
 
