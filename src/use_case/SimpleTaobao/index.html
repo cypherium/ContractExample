@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script type="text/javascript" src="../../web3.js"></script>
+<script type="text/javascript">
+	var accPasswd = "aaaaaa";
+	var sFrom = null;
+	var sTo = null;
+	
+    var Web3 = require('web3');
+    var web3 = new Web3();
+    //web3.setProvider(new web3.providers.HttpProvider("http://54.244.144.111:8000"));
+	web3.setProvider(new web3.providers.HttpProvider("http://localhost:8000"));
+
+	var abi=
+	[{"constant":false,"inputs":[{"name":"name","type":"string"},{"name":"number","type":"uint32"}]
+	,"name":"changeGoodsInfo"
+	,"outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"nonpayable","type":"function"}
+	
+	,{"constant":false,"inputs":[{"name":"name","type":"string"},{"name":"number","type":"uint32"},{"name":"_to","type":"address"}]
+	,"name":"transfer"
+	,"outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"nonpayable","type":"function"}
+	
+	,{"constant":true,"inputs":[{"name":"name","type":"string"},{"name":"_to","type":"address"}]
+	,"name":"getGoodsInfo"
+	,"outputs":[{"name":"name","type":"string"}],"payable":false,"stateMutability":"view","type":"function"}
+
+	,{"constant":true,"inputs":[{"name":"name","type":"string"}]
+	,"name":"findGoods"
+	,"outputs":[{"name":"name","type":"string"}],"payable":false,"stateMutability":"view","type":"function"}]
+
+	var my =  web3.cph.contract(abi);
+	var javaContract;
+	
+	function deployContract(){
+		sFrom = document.getElementById('Acc1').value;
+		if( sFrom.length < 40 ) return;
+		web3.personal.unlockAccount(sFrom, accPasswd)
+		var code = document.getElementById('javabytes').value;
+		setButtonDisable( true );
+			
+		javaContract = my.new("my",{from:sFrom, data:code,gas:1000000},function (e, contract){
+					if( e != null ){
+						alert(e);
+						return;
+					}
+					if( typeof(contract.address) != 'undefined') {
+						 setButtonDisable( false );
+						 alert('Contract address: ' + contract.address + ' \n transactionHash: ' + contract.transactionHash);
+					}
+				} );
+			
+	    //javaContract = my.at("0x144d16bca927cd1a2cabda1381d3b2f09187e262");
+		alert("Deploy submitted!");
+	}
+
+	function getContractInfo(stype){
+		if( sFrom== null) return;
+		alert("contract.address=" + javaContract.address);
+	}
+	
+	function setButtonDisable(flag){
+        document.getElementById('getContractInfo0').disabled = flag;   
+	}
+	
+	function create_account(n){
+		sAddr =  web3.personal.newAccount(accPasswd);
+		if( n==1 )
+			sFrom = sAddr;
+		else 
+			sTo = sAddr;
+			
+		document.getElementById('Acc'+ n).value = sAddr;
+	}
+	
+	var m_sGoods = "<table border=1><tr><td><B>name</B></td><td><B>number</B></td></tr>";
+	function addGoods(){
+       sname = document.getElementById('goodsname').value;
+	   svalue = document.getElementById('goodsnumber').value;
+	   web3.personal.unlockAccount(sFrom, accPasswd)
+	   
+	   javaContract.changeGoodsInfo(sname,svalue, {from: sFrom } );
+	   //alert(s);
+	   
+	   m_sGoods += "<tr><td>" + sname + "</td><td>" + svalue + "</td></tr>";
+	   document.getElementById('divgoods').innerHTML =  m_sGoods + "</table>";
+	}
+	function transferGoods(){
+       saddr = document.getElementById('addr').value;
+       sname = document.getElementById('goodsname1').value;
+	   svalue = document.getElementById('goodsnumber1').value;
+	   //web3.personal.unlockAccount(sFrom, accPasswd)
+	   javaContract.transfer(sname, svalue, saddr, {from: sFrom });
+	   //alert(s);
+	}	
+	
+	function getNumber0(){
+	    svalue = document.getElementById('goodsname').value;
+		alert(javaContract.getGoodsInfo(svalue,sFrom));
+	}
+	function getNumber1(){
+	    svalue = document.getElementById('goodsname1').value;
+        saddr = document.getElementById('addr').value;
+		alert(javaContract.getGoodsInfo(svalue,saddr));
+	}
+	
+	function FindAllGoods(){
+       sname = document.getElementById('goodsname2').value;
+	   alert(javaContract.findGoods(sname));
+	}
+</script>
+</head>
+<body>
+From Account<button onClick="create_account(1)">Create</button> : <input id="Acc1" style='width:350px' value="0x6bb15815894dde03b993976fb29ec12d80c4fc4e">
+&nbsp;&nbsp;&nbsp;&nbsp;
+To Account<button onClick="create_account(2)">Create</button> : <input id="Acc2" style='width:350px' value="0x6f47b151b66ccba787e887be04f5a56f5234004b">
+<hr>
+    Java contract bytecode: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	<button onClick="deployContract('java');">Deploy</button>&nbsp;&nbsp;&nbsp;&nbsp;
+	<button id="getContractInfo0" disabled onClick="getContractInfo('java');">Get contract info</button>&nbsp;&nbsp;&nbsp;&nbsp; <br>
+	<textarea id="javabytes" cols=185 rows=8 align=left>0xcafebabe0000003400790a002100350800360800370800380a0039003a0a003b003c0a0039003d0a003e003f0a003b00400a003900410800420a003b00430700440a000d00350a000d00450800460a000d00470a003900480800490a0039004a08004b0a0039004c08004d09004e004f0a005000510800520a003b00530800540800550800560800570700360700580100063c696e69743e010003282956010004436f646501000f4c696e654e756d6265725461626c650100046d61696e010016285b4c6a6176612f6c616e672f537472696e673b295601000f6368616e6765476f6f6473496e666f010027284c6a6176612f6c616e672f537472696e673b4a294c6a6176612f6c616e672f537472696e673b01000d537461636b4d61705461626c6507005901000c676574476f6f6473496e666f010038284c6a6176612f6c616e672f537472696e673b4c6a6176612f6c616e672f537472696e673b294c6a6176612f6c616e672f537472696e673b01000966696e64476f6f6473010026284c6a6176612f6c616e672f537472696e673b294c6a6176612f6c616e672f537472696e673b07005a0100087472616e73666572010039284c6a6176612f6c616e672f537472696e673b4a4c6a6176612f6c616e672f537472696e673b294c6a6176612f6c616e672f537472696e673b01000a536f7572636546696c6501001153696d706c6554616f62616f2e6a6176610c0022002301000c53696d706c6554616f62616f01000d53696d706c652054616f62616f01000007005b0c005c005d0700590c005e005f0c0060002d0700610c006200630c006400650c0066006701000940416c6c476f6f64730c006800630100176a6176612f6c616e672f537472696e674275696c6465720c0069006a0100017c0c006b006c0c006d002f01000940416464724c6973740c006e002f010001400c006f00700100026f6b0700710c007200730700740c0075007601000a66696e64476f6f64733a0c007700780100013a010014496e73756666696369656e742062616c616e636501000c7472616e736665722e2e313d01000a6e6f7420666f756e64210100106a6176612f6c616e672f4f626a6563740100106a6176612f6c616e672f537472696e670100135b4c6a6176612f6c616e672f537472696e673b0100136a617661782f6379706865722f4379706e657401000c736574546f6b656e496e666f01003a284c6a6176612f6c616e672f537472696e673b4c6a6176612f6c616e672f537472696e673b4a4c6a6176612f6c616e672f537472696e673b295a0100077265706c616365010016284343294c6a6176612f6c616e672f537472696e673b01000e67657443616c6c657253746174650100116a6176612f6c616e672f496e74656765720100087061727365496e74010015284c6a6176612f6c616e672f537472696e673b294901000776616c75654f66010015284a294c6a6176612f6c616e672f537472696e673b01000e73657443616c6c65725374617465010039284c6a6176612f6c616e672f537472696e673b4c6a6176612f6c616e672f537472696e673b4c6a6176612f6c616e672f537472696e673b295a010007696e6465784f66010006617070656e6401002d284c6a6176612f6c616e672f537472696e673b294c6a6176612f6c616e672f537472696e674275696c6465723b010008746f537472696e6701001428294c6a6176612f6c616e672f537472696e673b01000a6765744164647265737301000867657453746174650100087365745374617465010027284c6a6176612f6c616e672f537472696e673b4c6a6176612f6c616e672f537472696e673b295a0100106a6176612f6c616e672f53797374656d0100036f75740100154c6a6176612f696f2f5072696e7453747265616d3b0100136a6176612f696f2f5072696e7453747265616d0100077072696e746c6e010015284c6a6176612f6c616e672f537472696e673b295601000573706c6974010027284c6a6176612f6c616e672f537472696e673b295b4c6a6176612f6c616e672f537472696e673b002100200021000000000006000100220023000100240000001d00010001000000052ab70001b1000000010025000000060001000000040009002600270001002400000028000500010000000c12021203091204b8000557b10000000100250000000a000200000006000b0007000900280029000100240000011900050005000000aa2a10401023b600064b2a1204b800074e2d1204a5001b2db8000836042a1504851f61b800091204b8000a57a700462a1fb800091204b8000a57120b1204b800074e2d2ab6000c9c002bbb000d59b7000e2db6000f2a107c102cb60006b6000f1210b6000fb600114e120b2d1204b8000a571204b800123a041213b800144e2d1904b6000c9c0023bb000d59b7000e2db6000f1904b6000f1215b6000fb600114e12132db80016571217b00000000200250000004600110000000a0009000b0010000c0016000d001c000e002b0010002e0012003900140041001500490016006800170071001b0078001c007e001d0087001e00a0001f00a70022002a000000110003fc002e07002bfb0042fc003507002b0009002c002d000100240000002f000200030000000f2a2bb800074db200182cb600192cb00000000100250000000e00030000002600060027000d00280009002e002f00010024000000de000300060000007912044c1213b800144db20018bb000d59b7000e121ab6000f2cb6000fb60011b600192c1215b6001b4e2dbe360403360515051504a2003c2a2d150532b800074d2c1204a50027bb000d59b7000e2bb6000f2d150532b6000f121cb6000f2cb6000f1210b6000fb600114c840501a7ffc3b200182bb600192bb000000002002500000032000c0000002c0003002d0009002e0022002f00290030002d0031003700320040003300460034006a00310070003700770038002a0000001b0003ff0030000607002b07002b07002b0700300101000039fa0005000900310032000100240000010000060007000000912a1204b800073a04b200181904b6001919041204a500771904b8000836051f150585949e0006121db02a1505851f65b800091204b8000a57b20018bb000d59b7000e121eb6000f1505851f65b80009b6000fb60011b600192a2db800073a0419041204a5001b1904b8000836062a1506851f61b800092db8000a57a7000d2a1fb800092db8000a57a70006121fb01217b00000000200250000004600110000003c0008003d0010003e0017003f001e004000260041002900430038004400580045005f004600660047006d0048007b0049007e004a0088004c008b004d008e004f002a000000110005fd002907002b01fb0054fa0009020200010033000000020034</textarea>
+	<H4 align=center>Simple TaoBao</H4>
+    <br>Goods:&nbsp;&nbsp;&nbsp;&nbsp; Name：<input id="goodsname" style='width:150px' value="aaa"> Number：<input id="goodsnumber" style='width:150px' value="11">
+	&nbsp;&nbsp;&nbsp;&nbsp
+	<button onClick="addGoods();">Add Goods</button>&nbsp;&nbsp;&nbsp;&nbsp;
+	<button id="getNumber0" onClick="getNumber0();">Get Number</button>
+<hr><div id=divgoods></div><hr>
+	Sales: &nbsp;&nbsp;&nbsp;&nbsp;Sell To： <input id="addr" style='width:150px' value="0x8c30d63ff6be595ac3bc789f9d519ca8de096091"> Name：<input id="goodsname1" style='width:150px' value="aaa">Number：<input id="goodsnumber1" style='width:150px' value="1">
+	&nbsp;&nbsp;&nbsp;&nbsp;
+<button id="Transfer1" onClick="transferGoods();">Transfer</button>&nbsp;&nbsp;&nbsp;&nbsp;
+<button id="getNumber1" onClick="getNumber1();">Get Number</button><br>
+Name：<input id="goodsname2" style='width:150px' value="aaa"> <button onClick="FindAllGoods();">FindAll</button><br>
+
+</body>
+</html>
