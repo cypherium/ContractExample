@@ -8,22 +8,22 @@ public class SimpleTaobao {
 
     public static String changeGoodsInfo(String name, long number ) {
 		name = name.replace('@', '#');
-		String s = Cypnet.getCallerState(name, "");
+		String s = Cypnet.getCallerState(name, ""); //Get the number of specified goods by caller owned
 		if( s != "" ){
 		   int num = Integer.parseInt(s);
-		   Cypnet.setCallerState(name, String.valueOf(num+number), "" );
+		   Cypnet.setCallerState(name, String.valueOf(num+number), "" ); //Change the number 
 		   
 		} else {
 			
-		   Cypnet.setCallerState(name, String.valueOf(number), "" );
-		   
-		   s = Cypnet.getCallerState("@AllGoods", "");
+		   Cypnet.setCallerState(name, String.valueOf(number), "" ); //Change the number
+		   //Modify goods list information
+		   s = Cypnet.getCallerState("@AllGoods", ""); //
 		   if( s.indexOf(name) < 0 ){
 			   s +=  name.replace('|', ',') + "|";
 			   Cypnet.setCallerState("@AllGoods", s, "" );
 		   }
 		}
-		
+		//Modify Modify seller list information
 		String fromAddr = Cypnet.getAddress("");
 	    s = Cypnet.getState("@AddrList");
 	    if( s.indexOf(fromAddr) < 0 ){
@@ -33,13 +33,13 @@ public class SimpleTaobao {
 
 		return "ok";
 	}
-	
+	//Get the number of the seller's goods 
     public static String getGoodsInfo(String name, String addr ) {
 		String s = Cypnet.getCallerState(name, addr);
 		System.out.println(s);
 		return s;
 	}
-
+    //Find the specified goods in all of the seller's goods
     public static String findGoods(String name) {
 		String res = "";
 	    String s = Cypnet.getState("@AddrList");
@@ -56,6 +56,7 @@ public class SimpleTaobao {
 		return res;
 	}
 	
+	//Caller sells goods to customers 
     public static String transfer(String name, long number, String _to ) {
 		String s = Cypnet.getCallerState(name, "");
 		System.out.println(s);
