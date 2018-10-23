@@ -1,5 +1,11 @@
-This is an example of logistics financing. The functions are: entering the warehouse, setting the token price, pledge financing (melting the coin), lifting the pledge, leaving the warehouse, and some query functions.
+This is an example of logistics financing. 
+
+The functions are: 
+
+entering the warehouse, setting the token price, pledge financing (melting the coin), lifting the pledge, leaving the warehouse, and some query functions.
+
 This example is more in line with the actual situation of the logistics industry, and uses the characteristics of the blockchain, involving multi-party collaboration and account mutual restraint, the use of goods to melt coins, only the pledge account can have the authority to release the pledge, tracking the number of goods, lock the situation , transportation route, etc.
+
 Although the function is not perfect, it can continue to generate complex practical applications in the logistics industry.
 
 This smart contract instance opens the following interface:
