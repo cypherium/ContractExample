@@ -3,7 +3,9 @@ import mjson.Json;
 
 public class Logistics {
 	static Json defj = Json.object();
+	
     public static void main(String[] args) {
+		//Set token information 
 		Cypnet.setTokenInfo("LGS", "Logistics Coin", 1000000000, "" );
 	}	
 	
@@ -30,11 +32,11 @@ public class Logistics {
 	   try{
 			j = Json.read(s);
 	   }catch(Exception e){
-		  //异常处理
+
 	   }
 	   return j;
    }
-	
+	//Incoming goods
     public static String in(String name, long number ) {
 	   String fromAddr = Cypnet.getAddress("");
 	   Json j = getStateJson();
@@ -55,7 +57,7 @@ public class Logistics {
 
        return "ok";
 	}	
-
+    //Set the price at which each item is converted into a token
 	public static String setTokenPrice(String name, long tokenPrice ) {
 	   if( Cypnet.getAddress("") != Cypnet.getAddress("owner") )
 		   return "Permission denied, must be the contract owner";
@@ -68,7 +70,8 @@ public class Logistics {
 	   return "ok";
 	}
 
-	public static String pledge(String name, long number, String  addr ) {
+	//Placing goods into financial companies for the purpose of melting coins
+	public static String pledge(String name, long number, String  addr/*financial companies*/ ) {
 	   String fromAddr = Cypnet.getAddress("");
 	   String s = Cypnet.getState("@AllGoods"); //
 	   Json j = getStateJson();
@@ -92,7 +95,7 @@ public class Logistics {
 	   return "Insufficient balance";		
 		//System.out.println(s);
 	}
-	
+	//Financial company confirms acceptance of pledge
 	public static String confirmPledge(String name, String addr, long number ) {
 	   String fromAddr = Cypnet.getAddress("");
 	   String s = Cypnet.getState("@AllGoods"); //
@@ -120,7 +123,7 @@ public class Logistics {
        Cypnet.transfer(fromAddr, addr, n ); 
 	   return "ok";
 	}
-
+    //The cargo owner cancels the pledge, there is no need for the financial company to confirm, as long as the token is issued to the financial company, the pledge is automatically released.
 	public static String releasePledge(String name, long number ) {
 	   String fromAddr = Cypnet.getAddress("");
 	   Json j = getStateJson();
@@ -150,7 +153,7 @@ public class Logistics {
 	   Cypnet.setState("@AllGoods", j.toString() );
 	   return "ok";
 	}
-	
+	//goods out
 	public static String out(String name, long number ) {
 	   String fromAddr = Cypnet.getAddress("");
 	   Json j = getStateJson();
@@ -174,7 +177,7 @@ public class Logistics {
 	   return "ok";
 	}
 
-	//Get the number of the seller's goods 
+	//Get the info of the seller's goods 
     public static String getGoodsInfo(String name ) {
   	    String s = Cypnet.getState("@AllGoods"); 
 		System.out.println(s);
