@@ -7,11 +7,6 @@ public class Fligt {
     public static void main(String[] args) {
 		//Set the token information for flight delay insurance
 		Cypnet.setTokenInfo("FLGI", "Fligt Insurance", 1000000000, "" );
-		feeSet(10);
-		buy(10);
-		flight("No1", 2 );
-		flightResult("No1", 180 );
-	    System.out.println( Cypnet.getState("@FLGI") );  
 	}	
 	//Set insurance fee
     public static String feeSet(long fee ) {
