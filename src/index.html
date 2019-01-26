@@ -29,6 +29,8 @@
 	
 	function deployContract(stype){
 		sFrom = document.getElementById('Acc1').value;
+		sTo = document.getElementById('Acc2').value;
+		
 		if( sFrom.length < 40 ) return;
 		if( stype=="java" ) {
 			setButtonDisable('java',true);
@@ -81,8 +83,14 @@
 		}
 		
 	}
-	function getBalanceOf(stype,addr){
-		if( sFrom== null) return;
+	function getBalanceOf(stype,sType){
+	    addr = null;
+	    if( sType == 'From' )
+			addr = sFrom;
+		else if( sType == 'To' )
+			addr = sTo;
+		alert(addr);
+		if( addr== null) return;
 		if( stype=="java" ) {
 			alert(addr + " token balance is: " + javaContract.balanceOf(addr));
 		
@@ -138,8 +146,8 @@ To Account<button onClick="create_account(2)">Create</button> : <input id="Acc2"
     Java contract bytecode: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 	<button onClick="deployContract('java');">Deploy</button>&nbsp;&nbsp;&nbsp;&nbsp;
 	<button id="getContractInfo0" disabled onClick="getContractInfo('java');">Get contract info</button>&nbsp;&nbsp;&nbsp;&nbsp; 
-	<button id="getBalanceOf01" disabled onClick="getBalanceOf('java',sFrom);">From's Balance</button>&nbsp;&nbsp;&nbsp;&nbsp; 
-	<button id="getBalanceOf02"  disabled onClick="getBalanceOf('java',sTo);">To's Balance</button>&nbsp;&nbsp;&nbsp;&nbsp; 
+	<button id="getBalanceOf01" disabled onClick="getBalanceOf('java','From');">From's Balance</button>&nbsp;&nbsp;&nbsp;&nbsp; 
+	<button id="getBalanceOf02"  disabled onClick="getBalanceOf('java','To');">To's Balance</button>&nbsp;&nbsp;&nbsp;&nbsp; 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <input id="transJavaValue" style='width:80px' value="100"> &nbsp;&nbsp;&nbsp;&nbsp;
 <button id="Transfer0" disabled onClick="transferContract('java');">Transfer</button>
