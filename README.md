@@ -99,7 +99,7 @@ After the modification is complete, open the webpage with a local browser. It is
 
 Copy the results of file2str HelloWorld.class to the text box under the Java contract bytecode. Clicking the [Deploy] button will prompt whether the execution is successful, as shown below:
 
-![](./smart_contract_tuto3.png)
+![](./smart_contract_tuto3.jpeg)
 
 If an error is reported, make sure to double check your work up to this point to find your error.
 
