@@ -94,8 +94,8 @@ And address setting section
 ```
 To your blockchain node and address.You should do something ready work for this operation:
 
- * green The sFrom address must have a balance of more than one CPH.
- * green Change the accPasswd which it's default value is 1 according to your node's account password in file "index.html" :
+ *  The sFrom address must have a balance of more than one CPH.
+ *  Change the accPasswd which it's default value is 1 according to your node's account password in file "index.html" :
  ```
  var accPasswd = "1";
  ```
