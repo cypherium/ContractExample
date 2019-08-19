@@ -93,8 +93,9 @@ And address setting section
  var​ sFrom = ​"0x6bb15815894dde03b993976fb29ec12d80c4fc4e"​; var​ sTo = ​"0x6f47b151b66ccba787e887be04f5a56f5234004b"​;
 ```
 To your blockchain node and address.You should do something ready work for this operation:
- \{} The sFrom address must have a balance of more than one CPH.
- \{} Change the accPasswd which it's default value is 1 according to your node's account password in file "index.html" :
+
+ *green The sFrom address must have a balance of more than one CPH.
+ *green Change the accPasswd which it's default value is 1 according to your node's account password in file "index.html" :
  ```
  var accPasswd = "1";
  ```
