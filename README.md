@@ -85,9 +85,9 @@ https://github.com/cypherium/ContractExample/blob/master/src/web3.js
 
 to the current directory and open them with a text file editor, Change the blockchain node settings section
 ```
- web3.setProvider(​new web3​.providers.HttpProvider(​"http://54.244.144.111:8000"​));
+ web3.setProvider(​new web3​.providers.HttpProvider(​"http://54.244.144.111:18002"​));
 ```
-
+The ip "54.244.144.111" please replace it by miner's.
 And address setting section
 ```
  var​ sFrom = ​"0x6bb15815894dde03b993976fb29ec12d80c4fc4e"​; var​ sTo = ​"0x6f47b151b66ccba787e887be04f5a56f5234004b"​;
