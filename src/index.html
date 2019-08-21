@@ -9,8 +9,8 @@
 	
     var Web3 = require('web3');
     var web3 = new Web3();
-    //web3.setProvider(new web3.providers.HttpProvider("http://54.244.144.111:8000"));
-	web3.setProvider(new web3.providers.HttpProvider("http://localhost:8000"));
+    web3.setProvider(new web3.providers.HttpProvider("http://54.244.144.111:18002"));
+	//web3.setProvider(new web3.providers.HttpProvider("http://localhost:18002"));
 
 	var abi=
 	[{"constant":true,"inputs":[],"name":"name","outputs":       [{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"}
