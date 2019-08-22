@@ -121,25 +121,25 @@ public​ ​class​ ​HelloWorld​ {
     ​public​ ​static​ String ​transfer​(String _to, ​long​ _value) {} 
 }
 ```
-
+## javax.cypher.Cypnet library
 In addition, we also provide the following functions in the javax.cypher.Cypnet library.
 
-## Get the account balance
+### Get the account balance
 ```
 public​ ​static​ ​native​ ​long​ ​BalanceOf​(String paramString);
 ```
 
-## Change the account balance
+### Change the account balance
 ```
 public​ ​static​ ​native​ ​boolean​ ​ChangeBalance​(String paramString, ​long​ paramLong);
 ```
 
-## Get key-value
+### Get key-value
 ```
  public​ ​static​ ​native​ ​boolean​ GetState(​String​ paramString1, ​String​ paramString2, byte​[] paramArrayOfByte);
 ```
 
-## Set key-value
+### Set key-value
 ```
  public​ ​static​ ​native​ ​boolean​ SetState(​String​ paramString1, ​String​ paramString2, byte​[] paramArrayOfByte);
 ```
