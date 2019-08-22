@@ -94,8 +94,8 @@ After the Prepare is completed, open the `index.html` deploy tool with google ch
 
 ![](./smart_contract_tuto2.png)
 
-The Java contract bytecode is auto fill int blank. Clicking the `Deploy` button will prompt whether the execution is successful, as shown below:
-
+The Java contract bytecode is auto fill in blank. `From address` should fill in one of your account which have enough balance,`To address` fill in another account or reserved.
+Finally clicking the `Deploy` button will prompt whether the execution is successful, as shown below:
 ![](./smart_contract_tuto3.jpeg)
 
 
