@@ -12,13 +12,12 @@ javac 1.8.xxx
 ```
 Download repository
 
- #### 1. Open the terminal and clone repository:
  ```
   $​git clone https://github.com/cypherium/ContractExample.git
   $​cd ContractExample
  ```
 
-## Compilation of smart contracts
+## Write and Compile smart contract
 
 First, we can create one simple HelloWorld smart contract as follows:
 
@@ -62,7 +61,7 @@ $​ javac -cp ./jdk/classes HelloWorld.java
 
 A HelloWorld.class will be generated in the current directory.
 
-## Publish your smart contract
+## Deploy your smart contract
 
 In order to publish your newly generated HelloWorld.class on the Cypherium blockchain network, you need to convert the binary file into string format. We provide one file2str tool to complete this step (similar tools on the network are also available):
 
