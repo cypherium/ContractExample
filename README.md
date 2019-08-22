@@ -75,11 +75,11 @@ $​ ../file2str/linux/file2str HelloWorld.class
 ```
 
 ![](./smart_contract_tuto1.png)
-
-* Prepare tow account address
+Prepare tow account address
 Please approve your CypherBin node has tow accounts by using `cph.accounts` check this.If not,your creat enough account by command `personal.newAccount()` function.
 Also you should approve one of your account balance is not 0.
-*  Edit the `index.html` file,Change the blockchain node settings section
+
+Edit the `index.html` file,Change the blockchain node settings section
 ```
  web3.setProvider(​new web3​.providers.HttpProvider(​"http://54.244.144.111:18002"​));
 ```
@@ -97,14 +97,13 @@ The Java contract bytecode is auto fill int blank. Clicking the [Deploy] button 
 
 ![](./smart_contract_tuto3.jpeg)
 
-If an error is reported, make sure to double check your work up to this point to find your error.
 
 ## Execute smart contract
----
+
 After deploying the HelloWorld Smart Contract according to the above diagram, you can click [Get contract info], [From's Balance], [To's Balance], [Transfer] to perform related smart contract executions.
 
 ## Smart contracts​ ​development
----
+
 Smart contracts are divided into token smart contracts and general smart contracts.
 
 The Cypherium token smart contract follows the Ethereum ERC20 standard and requires the following fixed structure:
