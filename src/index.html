@@ -25,7 +25,7 @@
 	,{"anonymous":false,"inputs":[{"indexed":true,"name":"from","type":"address"},{"indexed":true,"name":"to","type":"address"},{"indexed":false,"name":"value","type":"uint256"}],"name":"Transfer","type":"event"}]
 	
 	var my =  web3.cph.contract(abi);
-	var javaContract, ethContract;
+	var javaContract, cphContract;
 	
 	function deployContract(stype){
 		sFrom = document.getElementById('Acc1').value;
@@ -54,7 +54,7 @@
 			web3.personal.unlockAccount(sFrom, accPasswd)
 			var code = document.getElementById('ethbytes').value;
 			
-			ethContract = my.new("my", {from:sFrom, data:code,gas:1000000},function (e, contract){
+			cphContract = my.new("my", {from:sFrom, data:code,gas:1000000},function (e, contract){
 					if( e != null ){
 						alert(e);
 						return;
@@ -64,7 +64,7 @@
 						 alert('Contract address: ' + contract.address + ' \n transactionHash: ' + contract.transactionHash);
 					}
 				} );
-			//ethContract = my.at("0x60292327fdaad719e3a61c6262296c0d8288db00");
+			//cphContract = my.at("0x60292327fdaad719e3a61c6262296c0d8288db00");
 		}
 		alert("Deploy submitted!");
 	}
@@ -76,10 +76,10 @@
 			+ "\n symbol=" + javaContract.symbol() 
 			+ "\n totalSupply=" + javaContract.totalSupply() );
 		}else{
-			alert("contract.address=" + ethContract.address
-			+ "\n name=" + ethContract.name() 
-			+ "\n symbol=" + ethContract.symbol() 
-			+ "\n totalSupply=" + ethContract.totalSupply() );
+			alert("contract.address=" + cphContract.address
+			+ "\n name=" + cphContract.name() 
+			+ "\n symbol=" + cphContract.symbol() 
+			+ "\n totalSupply=" + cphContract.totalSupply() );
 		}
 		
 	}
@@ -95,7 +95,7 @@
 			alert(addr + " token balance is: " + javaContract.balanceOf(addr));
 		
 		}else{
-			alert(addr + " token balance is: " + ethContract.balanceOf(addr));
+			alert(addr + " token balance is: " + cphContract.balanceOf(addr));
 		}
 	}
 	
@@ -107,7 +107,7 @@
 			javaContract.transfer(sTo, v, {from: sFrom});
 		}else{
 			v = document.getElementById('transEthValue').value;
-			ethContract.transfer(sTo, v, {from: sFrom});
+			cphContract.transfer(sTo, v, {from: sFrom});
 		}
 		alert("Transfer submitted!");
 	}

@@ -1,7 +1,8 @@
 # Cypherium Java Smart Contract Tutorial
-
+===
 ## Environmental configuration
-As Cypherium’s Java Smart Contract system supports JDK1.8, the development environment of JDK1.8 is required first before you may start developing. To learn how to configure the environment of JDK1.8, refer to Java’s online literature.
+---
+Cypherium’s Java Smart Contract system need JDK1.8 support.So Please install JDK1.8. To learn how to configure the environment of JDK1.8, refer to Java’s online literature.
 
 After you have configured your JDK environment, execute javac --version in the Console environment to confirm whether it is 1.8.xxx
 
@@ -9,20 +10,17 @@ After you have configured your JDK environment, execute javac --version in the C
 $​ javac -version 
 javac 1.8.xxx
 ```
-
-In addition to completing the Java environment configuration, make sure you have configured the Cypherium smart contract JDK library.
-
-This step is very simple: just create a folder labeled “jdk/classes” in the current working directory, then download the following directory.
-
-https://github.com/cypherium/ContractExample/tree/master/client/jdk/classes
-
-
-to jdk/classes.
-
-In particular, since the java class file is cross-platform, the directory file can be used regardless of whether the client system is Linux, Mac, or Windows.
+Download repository
+---
+ #### 1. Open the terminal and clone repository:
+ ```
+  $​git clone https://github.com/cypherium/ContractExample.git
+  $​cd ContractExample
+ ```
 
 ## Compilation of smart contracts
-First, we can create a simple HelloWorld smart contract as follows:
+---
+First, we can create one simple HelloWorld smart contract as follows:
 
 ```
 import​ javax.cypher.Cypnet; 
@@ -58,48 +56,41 @@ public​ class HelloWorld {
 Compile HelloWorld.java and execute the following command:
 
 ```
+$ cd ContractExample/src
 $​ javac -cp ./jdk/classes HelloWorld.java
 ```
 
 A HelloWorld.class will be generated in the current directory.
 
 ## Publish your smart contract
+---
 In order to publish our newly generated HelloWorld.class on the Cypherium blockchain network, we also need to convert the binary file into a string. We provide a file2str tool to complete this step (similar tools on the network are also available):
 https://github.com/cypherium/ContractExample/tree/master/file2str
 
 We provide executable files for Linux, Mac, and Windows platforms, and users can download them according to their own operating systems.
 
-Execute in the current directory
+Execute in the current directory,Suppose your local at src folder and you Os are linux,Below is the usage:
 
 ```
-$​ file2str HelloWorld.class
+$​ ../file2str/linux/file2str HelloWorld.class
 ```
 
 ![](./smart_contract_tuto1.png)
 
-Download two files:
-
-https://github.com/cypherium/ContractExample/blob/master/src/index.html
-
-https://github.com/cypherium/ContractExample/blob/master/src/web3.js
-
-to the current directory and open them with a text file editor, Change the blockchain node settings section
+* Prepare tow account address
+Please approve your CypherBin node has tow accounts by using `cph.accounts` check this.If not,your creat enough account by command `personal.newAccount()` function.
+Also you should approve one of your account balance is not 0.
+*  Edit the `index.html` file,Change the blockchain node settings section
 ```
  web3.setProvider(​new web3​.providers.HttpProvider(​"http://54.244.144.111:18002"​));
 ```
-The ip "54.244.144.111" please replace it by miner's.
-And address setting section
-```
- var​ sFrom = ​"0x6bb15815894dde03b993976fb29ec12d80c4fc4e"​; var​ sTo = ​"0x6f47b151b66ccba787e887be04f5a56f5234004b"​;
-```
-To your blockchain node and address.You should do something ready work for this operation:
-
- *  The sFrom address must have a balance of more than one CPH.
- *  Change the accPasswd which it's default value is 1 according to your node's account password in file "index.html" :
+The ip "54.244.144.111" please replace it by miner's external ip.
+*  Change the accPasswd which it's default value is `1` according to your node's account password which created before:
  ```
  var accPasswd = "1";
  ```
-After the modification is complete, open the webpage with a local browser. It is recommended that you use the Chrome browser, as shown below:
+
+After the Prepare is completed, open the `index.html` with google chrome browser,as shown below:
 
 ![](./smart_contract_tuto2.png)
 
@@ -110,9 +101,11 @@ Copy the results of file2str HelloWorld.class to the text box under the Java con
 If an error is reported, make sure to double check your work up to this point to find your error.
 
 ## Execute smart contract
+---
 After deploying the HelloWorld Smart Contract according to the above diagram, you can click [Get contract info], [From's Balance], [To's Balance], [Transfer] to perform related smart contract executions.
 
 ## Smart contracts​ ​development
+---
 Smart contracts are divided into token smart contracts and general smart contracts.
 
 The Cypherium token smart contract follows the Ethereum ERC20 standard and requires the following fixed structure:
