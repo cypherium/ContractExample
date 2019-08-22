@@ -77,14 +77,15 @@ $​ ../file2str/linux/file2str HelloWorld.class
 ![](./smart_contract_tuto1.png)
 
 ### Prepare tow account address
-Please approve your CypherBin node has tow accounts by using `cph.accounts` check this.If not,your creat enough account by command `personal.newAccount()` function.
+Please approve your CypherBin node (VPS node or public machine node) has tow accounts by using `cph.accounts` check this.If not,your creat enough account by command `personal.newAccount()` function.
 Also you should approve one of your account balance is not 0.
 
-### Edit the `index.html` file,Change the node ip value and account password value
+### Edit the `index.html` file on your local computer which can run google chrome browser.
+Change the node ip value and account password value
 ```
  web3.setProvider(​new web3​.providers.HttpProvider(​"http://54.244.144.111:18002"​));
 ```
-The ip "54.244.144.111" please replace it by miner's external ip.
+The ip "54.244.144.111" please replace it by your VPS node or public machine  node's external ip.
 *  Change the accPasswd which it's default value is `1` according to your node's account password which created before:
  ```
  var accPasswd = "1";
