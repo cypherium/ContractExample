@@ -1,7 +1,7 @@
 # Cypherium Java Smart Contract Tutorial
-===
+
 ## Environmental configuration
----
+
 Cypherium’s Java Smart Contract system need JDK1.8 support.So Please install JDK1.8. To learn how to configure the environment of JDK1.8, refer to Java’s online literature.
 
 After you have configured your JDK environment, execute javac --version in the Console environment to confirm whether it is 1.8.xxx
@@ -11,7 +11,7 @@ $​ javac -version
 javac 1.8.xxx
 ```
 Download repository
----
+
  #### 1. Open the terminal and clone repository:
  ```
   $​git clone https://github.com/cypherium/ContractExample.git
@@ -19,7 +19,7 @@ Download repository
  ```
 
 ## Compilation of smart contracts
----
+
 First, we can create one simple HelloWorld smart contract as follows:
 
 ```
@@ -63,13 +63,12 @@ $​ javac -cp ./jdk/classes HelloWorld.java
 A HelloWorld.class will be generated in the current directory.
 
 ## Publish your smart contract
----
-In order to publish our newly generated HelloWorld.class on the Cypherium blockchain network, we also need to convert the binary file into a string. We provide a file2str tool to complete this step (similar tools on the network are also available):
-https://github.com/cypherium/ContractExample/tree/master/file2str
 
-We provide executable files for Linux, Mac, and Windows platforms, and users can download them according to their own operating systems.
+In order to publish your newly generated HelloWorld.class on the Cypherium blockchain network, you need to convert the binary file into string format. We provide one file2str tool to complete this step (similar tools on the network are also available):
 
-Execute in the current directory,Suppose your local at src folder and you Os are linux,Below is the usage:
+We provide executable files for Linux, Mac, and Windows platforms, and users can select the target type according to your OS systems.
+
+Suppose you local at `src` folder and you OS are linux,Below is the usage:
 
 ```
 $​ ../file2str/linux/file2str HelloWorld.class
