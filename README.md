@@ -89,11 +89,11 @@ The ip "54.244.144.111" please replace it by miner's external ip.
  var accPasswd = "1";
  ```
 
-After the Prepare is completed, open the `index.html` with google chrome browser,as shown below:
+After the Prepare is completed, open the `index.html` deploy tool with google chrome browser,as shown below:
 
 ![](./smart_contract_tuto2.png)
 
-Copy the results of file2str HelloWorld.class to the text box under the Java contract bytecode. Clicking the [Deploy] button will prompt whether the execution is successful, as shown below:
+The Java contract bytecode is auto fill int blank. Clicking the [Deploy] button will prompt whether the execution is successful, as shown below:
 
 ![](./smart_contract_tuto3.jpeg)
 
@@ -145,4 +145,5 @@ public​ ​static​ ​native​ ​boolean​ ​ChangeBalance​(String par
 ```
 
 We provide support for most JDK1.8 libraries in jdk/classes, and you may design smart contracts in accordance with traditional Java programs.
+
 
