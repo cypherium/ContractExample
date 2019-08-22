@@ -80,7 +80,7 @@ $​ ../file2str/linux/file2str HelloWorld.class
 Please approve your CypherBin node has tow accounts by using `cph.accounts` check this.If not,your creat enough account by command `personal.newAccount()` function.
 Also you should approve one of your account balance is not 0.
 
-### Edit the `index.html` file,Change the blockchain node settings section
+### Edit the `index.html` file,Change the node ip value and account password value
 ```
  web3.setProvider(​new web3​.providers.HttpProvider(​"http://54.244.144.111:18002"​));
 ```
@@ -101,7 +101,7 @@ Finally clicking the `Deploy` button will prompt whether the execution is succes
 
 ## Execute smart contract
 
-After deploying the HelloWorld Smart Contract according to the above diagram, you can click [Get contract info], [From's Balance], [To's Balance], [Transfer] to perform related smart contract executions.
+After deploying the HelloWorld Smart Contract according to the above diagram, you can click `Get contract info`, `From's Balance`, `To's Balance`, `Transfer` to perform related smart contract executions.
 
 ## Smart contracts​ ​development
 
