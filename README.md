@@ -63,10 +63,11 @@ A HelloWorld.class will be generated in the current directory.
 
 ## Deploy your smart contract
 
-In order to publish your newly generated HelloWorld.class on the Cypherium blockchain network, you need to convert the binary file into string format. We provide one file2str tool to complete this step (similar tools on the network are also available):
+In order to deploy your newly generated `HelloWorld.class` on the Cypherium blockchain network, you need to convert the binary file into string format. We provide one file2str tool to complete this step (similar tools on the network are also available):
 
 We provide executable files for Linux, Mac, and Windows platforms, and users can select the target type according to your OS systems.
 
+###Generate string format
 Suppose you local at `src` folder and you OS are linux,Below is the usage:
 
 ```
@@ -74,11 +75,12 @@ $​ ../file2str/linux/file2str HelloWorld.class
 ```
 
 ![](./smart_contract_tuto1.png)
-Prepare tow account address
+
+###Prepare tow account address
 Please approve your CypherBin node has tow accounts by using `cph.accounts` check this.If not,your creat enough account by command `personal.newAccount()` function.
 Also you should approve one of your account balance is not 0.
 
-Edit the `index.html` file,Change the blockchain node settings section
+###Edit the `index.html` file,Change the blockchain node settings section
 ```
  web3.setProvider(​new web3​.providers.HttpProvider(​"http://54.244.144.111:18002"​));
 ```
@@ -87,12 +89,12 @@ The ip "54.244.144.111" please replace it by miner's external ip.
  ```
  var accPasswd = "1";
  ```
-
+###Deploy by using index.html tool
 After the Prepare is completed, open the `index.html` deploy tool with google chrome browser,as shown below:
 
 ![](./smart_contract_tuto2.png)
 
-The Java contract bytecode is auto fill int blank. Clicking the [Deploy] button will prompt whether the execution is successful, as shown below:
+The Java contract bytecode is auto fill int blank. Clicking the `Deploy` button will prompt whether the execution is successful, as shown below:
 
 ![](./smart_contract_tuto3.jpeg)
 
