@@ -113,10 +113,10 @@ After deploying the HelloWorld Smart Contract according to the above diagram, yo
     ![](./smart_contract_Transfer_Balance.png)
 
   #### Thirdly,Check the Balance
-  
-   From account Balance
+
+   #####From account Balance
    ![](./smart_contract_From_Balance.png)
-   To account Balance
+   #####To account Balance
    ![](./smart_contract_To_Balance.png)
 
 ## Smart contracts​ ​development
