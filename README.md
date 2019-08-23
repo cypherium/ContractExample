@@ -74,7 +74,7 @@ Suppose you local at `src` folder and you OS are linux,Below is the usage:
 $​ ../file2str/linux/file2str HelloWorld.class
 ```
 
-![](./smart_contract_tuto1.png)
+![](./smart_contract_file2str.png)
 
 ### Prepare tow account address
 Please approve your CypherBin node (VPS node or public machine node) has tow accounts by using `cph.accounts` check this.If not,your creat enough account by command `personal.newAccount()` function.
@@ -93,17 +93,30 @@ The ip "54.244.144.111" please replace it by your VPS node or public machine  no
 ### Deploy by using index.html tool
 After the Prepare is completed, open the `index.html` deploy tool with google chrome browser,as shown below:
 
-![](./smart_contract_tuto2.png)
+![](./smart_contract_Fill_From_Account.png)
 
-The Java contract bytecode is auto fill in blank. `From address` should fill in one of your account which have enough balance,`To address` fill in another account or reserved.
-Finally clicking the `Deploy` button will prompt whether the execution is successful, as shown below:
-![](./smart_contract_tuto3.jpeg)
+The Java contract and Solidity contract bytecode is auto fill in blank. `From address` should fill in one of your account which have enough balance,`To address` fill in another account or reserved:
+![](./smart_contract_Fill_Target_Reserved.png)
+Finally clicking the `Deploy` button will prompt message info indicate the execution is successful, as shown below:
+![](./smart_contract_Depoly_Ok.png)
 
 
 ## Execute smart contract
 
 After deploying the HelloWorld Smart Contract according to the above diagram, you can click `Get contract info`, `From's Balance`, `To's Balance`, `Transfer` to perform related smart contract executions.
-
+###Get contract info
+![](./smart_contract_Get_Info.png)
+###Transfer、From's Balance、To's Balance
+  ####First,Fill in target account address
+  ![](./smart_contract_Fill_Target_Account.png)
+  ####Secondly,Transfer Balance
+  You can define the cph coin number which will be transfered.Then click the `Transfer` button:
+    ![](./smart_contract_Transfer_Balance.png)
+  ####Thirdly,Check the From account and To account address left Balance
+     #####From account Balance
+       ![](./smart_contract_From_Balance.png)
+     #####To account Balance
+       ![](./smart_contract_To_Balance.png)
 ## Smart contracts​ ​development
 
 Smart contracts are divided into token smart contracts and general smart contracts.

@@ -9,7 +9,7 @@
 	
     var Web3 = require('web3');
     var web3 = new Web3();
-    web3.setProvider(new web3.providers.HttpProvider("http://52.42.69.238:18002"));
+    web3.setProvider(new web3.providers.HttpProvider("http://54.244.144.111:18002"));
 	//web3.setProvider(new web3.providers.HttpProvider("http://localhost:18002"));
 
 	var abi=
@@ -23,19 +23,19 @@
 	,{"constant":false,"inputs":[{"name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"}
 	,{"inputs":[{"name":"initialSupply","type":"uint256"},{"name":"tokenName","type":"string"},{"name":"tokenSymbol","type":"string"}],"payable":false,"stateMutability":"nonpayable","type":"constructor"}
 	,{"anonymous":false,"inputs":[{"indexed":true,"name":"from","type":"address"},{"indexed":true,"name":"to","type":"address"},{"indexed":false,"name":"value","type":"uint256"}],"name":"Transfer","type":"event"}]
-	
+
 	var my =  web3.cph.contract(abi);
 	var javaContract, cphContract;
-	
+
 	function deployContract(stype){
 		sFrom = document.getElementById('Acc1').value;
 		sTo = document.getElementById('Acc2').value;
-		
+
 		if( sFrom.length < 40 ) return;
 		if( stype=="java" ) {
 			setButtonDisable('java',true);
 			web3.personal.unlockAccount(sFrom, accPasswd)
-			var code = document.getElementById('javabytes').value;			
+			var code = document.getElementById('javabytes').value;
 			javaContract = my.new("my",{from:sFrom, data:code,gas:1000000},function (e, contract){
 					if( e != null ){
 						alert(e);
@@ -48,14 +48,14 @@
 						 javaContract = my.at(receipt.contractAddress);
 					}
 				} );
-			
+
 			//javaContract = my.at("0xbe3c3786181b7742ec02f531ef35c953412976b9");
 		}else{
 			setButtonDisable('',true);
 			web3.personal.unlockAccount(sFrom, accPasswd);
-			
+
 			var code = document.getElementById('ethbytes').value;
-			
+
 			cphContract = my.new("my", {from:sFrom, data:code,gas:1000000},function (e, contract){
 					if( e != null ){
 						alert(e);
@@ -72,23 +72,23 @@
 		}
 		alert("Deploy submitted!");
 	}
-	
+
 	// cph.getTransactionReceipt("0x7b06c9137d3528129d85e9911cb0cc206c9aa0e79188eec4c4a0c83aecdbd316")
-	
+
 	function getContractInfo(stype){
 		if( sFrom== null) return;
 		if( stype=="java" ) {
 			alert("contract.address=" + javaContract.address
-			+ "\n name=" + javaContract.name() 
-			+ "\n symbol=" + javaContract.symbol() 
+			+ "\n name=" + javaContract.name()
+			+ "\n symbol=" + javaContract.symbol()
 			+ "\n totalSupply=" + javaContract.totalSupply() );
 		}else{
 			alert("contract.address=" + cphContract.address
-			+ "\n name=" + cphContract.name() 
-			+ "\n symbol=" + cphContract.symbol() 
+			+ "\n name=" + cphContract.name()
+			+ "\n symbol=" + cphContract.symbol()
 			+ "\n totalSupply=" + cphContract.totalSupply() );
 		}
-		
+
 	}
 	function getBalanceOf(sModule, sType){
 	    addr = null;
@@ -100,13 +100,13 @@
 		if( addr== null) return;
 		if( sModule =="java" ) {
 			alert(addr + " token balance is: " + javaContract.balanceOf(addr));
-		
+
 		}else{
 		alert(cphContract);
 			alert(addr + " token balance is: " + cphContract.balanceOf(addr));
 		}
 	}
-	
+
 	function transferContract(stype,addr){
 		sTo = document.getElementById('Acc2').value;
 		if( sTo.length < 40 ) return;
@@ -133,29 +133,29 @@
 			document.getElementById('Transfer1').disabled = bDisable;
 		}
 	}
-	
+
 	function create_account(n){
 		sAddr =  web3.personal.newAccount(accPasswd);
 		if( n==1 )
 			sFrom = sAddr;
-		else 
+		else
 			sTo = sAddr;
-			
+
 		document.getElementById('Acc'+ n).value = sAddr;
 	}
 </script>
 </head>
 <body>
 <H3 align=center>Contract Demo </H3>
-From Account<button onClick="create_account(1)">Create</button> : <input id="Acc1" style='width:350px' value="0x01482d12a73186e9e0ac1421eb96381bbdcd4557">
+From Account<button onClick="create_account(1)">Create</button> : <input id="Acc1" style='width:350px' value="0x7106be84394c3aa9bf6f14da9154d1b858f73ca6">
 &nbsp;&nbsp;&nbsp;&nbsp;
-To Account<button onClick="create_account(2)">Create</button> : <input id="Acc2" style='width:350px' value="0x004049d5769fba80e40dfe6e98d2165fcebe943b">
+To Account<button onClick="create_account(2)">Create</button> : <input id="Acc2" style='width:350px' value="">
 <hr><br>
     Java contract bytecode: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 	<button onClick="deployContract('java');">Deploy</button>&nbsp;&nbsp;&nbsp;&nbsp;
-	<button id="getContractInfo0" disabled onClick="getContractInfo('java');">Get contract info</button>&nbsp;&nbsp;&nbsp;&nbsp; 
-	<button id="getBalanceOf01" disabled onClick="getBalanceOf('java','From');">From's Balance</button>&nbsp;&nbsp;&nbsp;&nbsp; 
-	<button id="getBalanceOf02"  disabled onClick="getBalanceOf('java','To');">To's Balance</button>&nbsp;&nbsp;&nbsp;&nbsp; 
+	<button id="getContractInfo0" disabled onClick="getContractInfo('java');">Get contract info</button>&nbsp;&nbsp;&nbsp;&nbsp;
+	<button id="getBalanceOf01" disabled onClick="getBalanceOf('java','From');">From's Balance</button>&nbsp;&nbsp;&nbsp;&nbsp;
+	<button id="getBalanceOf02"  disabled onClick="getBalanceOf('java','To');">To's Balance</button>&nbsp;&nbsp;&nbsp;&nbsp;
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <input id="transJavaValue" style='width:80px' value="100"> &nbsp;&nbsp;&nbsp;&nbsp;
 <button id="Transfer0" disabled onClick="transferContract('java');">Transfer</button>
@@ -163,8 +163,8 @@ To Account<button onClick="create_account(2)">Create</button> : <input id="Acc2"
     <br>Solidity contract bytecode:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 	<button onClick="deployContract('');">Deploy</button>&nbsp;&nbsp;&nbsp;&nbsp;
 	<button id="getContractInfo1" disabled onClick="getContractInfo('');">Get contract info</button>&nbsp;&nbsp;&nbsp;&nbsp;
-	<button id="getBalanceOf11" disabled onClick="getBalanceOf('eth','From');">From's Balance</button>&nbsp;&nbsp;&nbsp;&nbsp; 
-	<button id="getBalanceOf12" disabled onClick="getBalanceOf('eth','To');">To's Balance</button>&nbsp;&nbsp;&nbsp;&nbsp; 
+	<button id="getBalanceOf11" disabled onClick="getBalanceOf('eth','From');">From's Balance</button>&nbsp;&nbsp;&nbsp;&nbsp;
+	<button id="getBalanceOf12" disabled onClick="getBalanceOf('eth','To');">To's Balance</button>&nbsp;&nbsp;&nbsp;&nbsp;
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <input id="transEthValue" style='width:80px' value="100"> &nbsp;&nbsp;&nbsp;&nbsp;
 <button id="Transfer1" disabled onClick="transferContract('eth');">Transfer</button>
