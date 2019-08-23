@@ -95,26 +95,26 @@ After the Prepare is completed, open the `index.html` deploy tool with google ch
 ![](./smart_contract_Fill_From_Account.png)
 
 The Java contract and Solidity contract bytecode is auto fill in blank. `From address` should fill in one of your account which have enough balance,`To address` fill in another account or reserved:
-![](./smart_contract_Fill_Target_Reserved.png)< br >
-Finally clicking the `Deploy` button will prompt message info indicate the execution is successful, as shown below:< br >
+![](./smart_contract_Fill_Target_Reserved.png)  
+Finally clicking the `Deploy` button will prompt message info indicate the execution is successful, as shown below:  
 ![](./smart_contract_Depoly_Ok.png)
 
 
 ## Execute smart contract
 
 After deploying the HelloWorld Smart Contract according to the above diagram, you can click `Get contract info`, `From's Balance`, `To's Balance`, `Transfer` to perform related smart contract executions.
-### Get contract info< br >
+### Get contract info  
 ![](./smart_contract_Get_Info.png)
-### Transfer、From's Balance、To's Balance< br >
-  #### Firstly,Fill in target account address< br >
+### Transfer、From's Balance、To's Balance  
+  #### Firstly,Fill in target account address  
   ![](./smart_contract_Fill_Target_Account.png)
-  #### Secondly,Transfer Balance< br >
+  #### Secondly,Transfer Balance  
   You can define the cph coin number which will be transfered.Then click the `Transfer` button:
     ![](./smart_contract_Transfer_Balance.png)
-  #### Thirdly,Check the From account and To account address left Balance< br >
-     ##### From account Balance< br >
+  #### Thirdly,Check the From account and To account address left Balance  
+     ##### From account Balance  
        ![](./smart_contract_From_Balance.png)
-     ##### To account Balance< br >
+     ##### To account Balance  
        ![](./smart_contract_To_Balance.png)
 ## Smart contracts​ ​development
 
