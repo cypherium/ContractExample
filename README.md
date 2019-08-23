@@ -113,7 +113,7 @@ After deploying the HelloWorld Smart Contract according to the above diagram, yo
     ![](./smart_contract_Transfer_Balance.png)
 
   #### Thirdly,Check the Balance
-
+  Before check balance,Please check your node's TxBlockNumber and KeyBlockNumber must be syn highest.
    ##### From account Balance
    ![](./smart_contract_From_Balance.png)
    ##### To account Balance
