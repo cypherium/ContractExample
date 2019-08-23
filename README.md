@@ -111,11 +111,13 @@ After deploying the HelloWorld Smart Contract according to the above diagram, yo
   #### Secondly,Transfer Balance  
   You can define the cph coin number which will be transfered.Then click the `Transfer` button:
     ![](./smart_contract_Transfer_Balance.png)
-  #### Thirdly,Check the From account and To account address left Balance  
-     ##### From account Balance  
+
+  #### Thirdly,Check the From account and To account address left Balance
+      * From account Balance
        ![](./smart_contract_From_Balance.png)
-     ##### To account Balance  
+      * To account Balance
        ![](./smart_contract_To_Balance.png)
+
 ## Smart contracts​ ​development
 
 Smart contracts are divided into token smart contracts and general smart contracts.
