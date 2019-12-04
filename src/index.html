@@ -82,9 +82,9 @@
 		}
 		alert("Deploy submitted!");
 	}
-	
+
 	// cph.getTransactionReceipt("0x7b06c9137d3528129d85e9911cb0cc206c9aa0e79188eec4c4a0c83aecdbd316")
-	
+
 	function getContractInfo(stype){
 		if( stype=="java" ) {
 			alert("contract.address=" + javaContract.address + "\n name=" + javaContract.name() 
@@ -102,9 +102,9 @@
 		sAddr =  web3.personal.newAccount(document.getElementById('Password').value);
 		if( n==1 )
 			sFrom = sAddr;
-		else 
+		else
 			sTo = sAddr;
-			
+
 		document.getElementById('Acc'+ n).value = sAddr;
 	}
 </script>
