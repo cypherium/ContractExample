@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script type="text/javascript" src="web3.js"></script>
+<script type="text/javascript">
+var rpcnodeAddress = "http://localhost:8002";
+var contractAddress = "0x672534f479669dba5079b914136eeb34357192aa";
+var sFrom = "0x0324cd97f5797aef0d3312c356112af17690148a";
+var accPasswd = "1";
+var sTo = "";
+
+var javaContract = null;
+var Web3 = require('web3');
+var web3 = new Web3();
+
+var abi=
+[{"name":"name"       ,"constant":true,"inputs":[],"outputs":[{"name":"","type":"string"}],"type":"function"},
+ {"name":"totalSupply","constant":true,"inputs":[],"outputs":[{"name":"","type":"uint256"}],"type":"function"},
+ {"name":"symbol"     ,"constant":true,"inputs":[],"outputs":[{"name":"","type":"string"}],"type":"function"},
+ {"name":"getValue"   ,"constant":true,"inputs":[{"name":"key","type":"string"}],"outputs":[{"name":"","type":"string"}],"type":"function"},
+ {"name":"balanceOf"  ,"constant":true,"inputs":[{"name":"addr","type":"address"}],"outputs":[{"name":"","type":"uint256"}],"type":"function"},
+ {"name":"setValue"   ,"constant":false,
+	"inputs":[{"name":"_to","type":"address"},{"name":"key","type":"string"},{"name":"value","type":"string"}],
+	"outputs": [{"name":"","type":"string"}],"type":"function"}, 
+ {"name":"transfer"   ,"constant":false,
+    "inputs":[{"name":"_to","type":"address"},{"name":"value","type":"uint256"}],
+	"outputs": [{"name":"","type":"string"}],"type":"function"}
+];
+var my =  web3.cph.contract(abi);
+//----------------------------------------------------------------------------------------------------------------------------------------
+function setContract() {
+ var rpcnode = document.getElementById('rpcnode').value;
+ if(rpcnode=="")
+    rpcnode =  rpcnodeAddress;
+
+ web3.setProvider(new web3.providers.HttpProvider(rpcnode));
+ var addr = document.getElementById('Contract').value;
+ if(addr=="")
+    addr =  contractAddress;
+ javaContract = my.at(addr); 
+}
+
+function getContractInfo(stype){
+  if (javaContract == null) {
+    alert("please set Rpc node and Contract address first!");
+    return;
+  } 	
+  alert("contract.address="+javaContract.address+"\n name="+javaContract.name()+"\n symbol="+javaContract.symbol()+"\n totalSupply="+javaContract.totalSupply());
+}
+function getBalanceOf(n){
+  if (javaContract == null) {
+	 alert("please set Rpc node and Contract address first!");
+	 return;
+  } 	
+  var addr = document.getElementById('Acc'+ n).value;
+  alert(addr + " token balance is: " + javaContract.balanceOf(addr));
+}
+function transferContract(stype,addr){
+    if (javaContract == null) {
+	   alert("please set Rpc node and Contract address first!");
+	   return;
+	 } 	
+	var sTo = document.getElementById('Acc2').value;
+	if( sTo.length < 40 ) return;
+	unlockAccount();
+	sFrom = document.getElementById('Acc1').value;
+	v = document.getElementById('transJavaValue').value;
+	ret = javaContract.transfer(sTo, v, {from: sFrom});
+	alert("Transfer submitted!"+ret);
+}
+function unlockAccount(){
+	web3.personal.unlockAccount(document.getElementById('Acc1').value, document.getElementById('Password').value);
+}
+function create_account(n){
+   accPasswd = document.getElementById('Password').value; 
+   document.getElementById('Acc'+ n).value =  web3.personal.newAccount(accPasswd);
+}
+function init(){
+   document.getElementById('rpcnode').value= rpcnodeAddress;
+   document.getElementById('Contract').value = contractAddress;
+   document.getElementById('Password').value = accPasswd;
+   document.getElementById('Acc1').value = sFrom;
+   document.getElementById('Acc2').value = sTo;  
+}
+function getValue() {
+  s = javaContract.getValue(document.getElementById('Key').value);
+  alert(s);
+}
+function setValue(){
+  unlockAccount();
+  sFrom = document.getElementById('Acc1').value;
+  key = document.getElementById('Key').value;
+  value = document.getElementById('Value').value;
+  ret = javaContract.setValue(sFrom,key,value,{from: sFrom});  
+  alert(ret);
+}
+</script>
+<body onload="init()">
+<H3 align=center>HelloWorld</H3>
+<br>
+<br>
+Rpc node:<input id=rpcnode value="">&nbsp;&nbsp;&nbsp;&nbsp;Contract address:<input id=Contract value=""> <Button onclick="setContract()"><B>Set</B></Button><hr>
+
+From Account<button onClick="create_account(1)">Create</button> : <input id="Acc1"  value="">&nbsp;&nbsp;&nbsp;&nbsp;Password:<input id=Password value="">
+<br>
+To &nbsp;&nbsp;&nbsp;&nbsp;Account<button onClick="create_account(2)">Create</button> : <input id="Acc2" value="">
+<br><br>  
+<button id="getContractInfo0"  onClick="getContractInfo('java');">Get contract info</button>&nbsp;&nbsp;&nbsp;&nbsp; 
+<button id="getBalanceOf01"  onClick="getBalanceOf(1);">From's Balance</button>&nbsp;&nbsp;&nbsp;&nbsp; 
+<button id="getBalanceOf02"   onClick="getBalanceOf(2);">To's Balance</button>&nbsp;&nbsp;&nbsp;&nbsp; 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<input id="transJavaValue" style='width:80px' value="100"> &nbsp;&nbsp;&nbsp;&nbsp;
+<button id="Transfer0"  onClick="transferContract('java');">Transfer</button>
+<br>
+<br>
+Key:&nbsp;&nbsp;&nbsp;<input id=Key value=""> <Button onclick="getValue()"><B>Get</B></Button>
+Value:<input id=Value value=""> <Button onclick="setValue()"><B>Set</B></Button>

@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script type="text/javascript" src="web3.js"></script>
+<script type="text/javascript">
+var rpcnodeAddress = "http://localhost:8002";
+var contractAddress = "0x39c7b009cb1bde1ab609070995f03479caf86df8";
+var accPasswd = "1";
+var javaContract = null;
+
+var Web3 = require('web3');
+var web3 = new Web3();
+var abi=
+[{"name":"name"       ,"constant":true,"inputs":[],"outputs":[{"name":"","type":"string"}],"type":"function"},
+ {"name":"totalSupply","constant":true,"inputs":[],"outputs":[{"name":"","type":"uint256"}],"type":"function"},
+ {"name":"symbol"     ,"constant":true,"inputs":[],"outputs":[{"name":"","type":"string"}],"type":"function"},
+ {"name":"getValue"   ,"constant":true,"inputs":[{"name":"key","type":"string"}],"outputs":[{"name":"","type":"string"}],"type":"function"},
+ {"name":"resume"     ,"constant":true,"inputs":[{"name":"id","type":"string"},{"name":"infotype","type":"string"}],"outputs":[{"name":"","type":"string"}],"type":"function"}, 
+ {"name":"setActor"   ,"constant":false,
+	"inputs":[{"name":"_to","type":"address"},{"name":"actType","type":"string"},{"name":"name","type":"string"}],
+	"outputs": [{"name":"","type":"string"}],"type":"function"}, 
+ {"name":"register"   ,"constant":false,
+    "inputs":[{"name":"fromAddress","type":"address"},{"name":"stdname","type":"string"},{"name":"sex","type":"string"},{"name":"age","type":"string"},{"name":"contact","type":"string"}],
+	"outputs": [{"name":"","type":"string"}],"type":"function"},
+ {"name":"education"  ,"constant":false,
+    "inputs":[{"name":"stid","type":"address"},{"name":"fromDate","type":"string"},{"name":"endDate","type":"string"},{"name":"major","type":"string"}],
+	"outputs": [{"name":"","type":"string"}],"type":"function"},
+ {"name":"prize"      ,"constant":false,
+    "inputs":[{"name":"stid","type":"address"},{"name":"name","type":"string"},{"name":"date","type":"string"}],
+	"outputs":[{"name":"","type":"string"}],"type":"function"},
+ {"name":"entry"      ,"constant":false,
+    "inputs":[{"name":"stid","type":"address"},{"name":"date","type":"string"},{"name":"position","type":"string"}],
+	"outputs":   [{"name":"","type":"string"}],"type":"function"},
+ {"name":"leave"      ,"constant":false,
+    "inputs":[{"name":"stid","type":"address"},{"name":"date","type":"string"},{"name":"desc","type":"string"}],
+	"outputs": [{"name":"","type":"string"}],"type":"function"},
+ {"name":"recommend"   ,"constant":false,
+    "inputs":[{"name":"stid","type":"string"},{"name":"company","type":"address"}],
+	"outputs": [{"name":"","type":"string"}],"type":"function"}
+ ];
+	
+var my =  web3.cph.contract(abi);
+//----------------------------------------------------------------------------------------------------------------------------------------
+
+var curIndex = 1
+function on_actor_click(index) {
+ curIndex = index;
+ for(i=1; i<6; i++ ){
+     if( i == index) continue;
+    var objD = document.getElementById("div"+i);
+    objD.removeAttribute("open");
+  }
+  var objD = document.getElementById("div"+index);
+  objD.setAttribute("open","open");
+}
+
+function unlock(account){
+	alert("unlock account:"+account);
+	web3.personal.unlockAccount(account, document.getElementById('Password').value);
+}
+
+function register() {
+  if (javaContract == null) {
+    alert("please set Rpc node and Contract address first!");
+    return;
+  } 	
+    var Student = document.getElementById("Student").value.toUpperCase();
+	document.getElementById("Student").value = Student;
+	unlock(Student);
+	
+    var stname = document.getElementById("stname").value;
+    var stsex = document.getElementById("stsex").value;
+    var stage = document.getElementById("stage").value;
+    var stcontact = document.getElementById("stcontact").value;
+	var ret = javaContract.register(Student,stname,stsex,stage,stcontact,{from: Student});
+	alert(ret);
+}
+function ed_auth() {
+  if (javaContract == null) {
+    alert("please set Rpc node and Contract address first!");
+    return;
+  } 	
+    var Education = document.getElementById("Education").value;
+	unlock(Education);
+    var edstid = document.getElementById("edstid").value;
+    var eddatefrom = document.getElementById("eddatefrom").value;
+    var eddateto = document.getElementById("eddateto").value;
+    var edmajor = document.getElementById("edmajor").value;
+	var ret =javaContract.education(edstid,eddatefrom,eddateto,edmajor,{from: Education});
+	alert(ret);
+}
+function ca_auth() {
+  if (javaContract == null) {
+    alert("please set Rpc node and Contract address first!");
+    return;
+  } 	
+    var Certification = document.getElementById("Certification").value;
+	unlock(Certification);
+    var castdid = document.getElementById("castdid").value;
+    var caname = document.getElementById("caname").value;
+    var cadate = document.getElementById("cadate").value;
+  //  var cadesc = document.getElementById("cadesc").value;
+	var ret = javaContract.prize(castdid,caname,cadate,{from: Certification});
+	alert(ret);
+	
+}
+function co_auth(m) {
+  if (javaContract == null) {
+    alert("please set Rpc node and Contract address first!");
+    return;
+  } 	
+    var Company = document.getElementById("Company").value;
+	unlock(Company);
+    var costid1 = document.getElementById("costid1").value;
+    var costid2 = document.getElementById("costid2").value;
+    var indate = document.getElementById("indate").value;
+    var position = document.getElementById("position").value;
+	
+	var outdate = document.getElementById("outdate").value;
+    var ledesc = document.getElementById("ledesc").value;
+	if( m == 1){
+	    var ret = javaContract.entry(costid1,indate,position,{from: Company});
+  	    alert(ret);
+	}else {
+   	    var ret = javaContract.leave(costid2,outdate,ledesc,{from: Company});
+	    alert(ret);
+	}
+}
+function admin(m) {
+  if (javaContract == null) {
+    alert("please set Rpc node and Contract address first!");
+    return;
+  } 	
+    var Admin =  document.getElementById("Admin").value;
+	unlock(Admin);
+	var adteacher = document.getElementById("adteacher").value;
+	var adschool = document.getElementById("adschool").value;
+	
+    var adcompany = document.getElementById("adcompany").value;
+    var adconame = document.getElementById("adconame").value;
+
+    var adca = document.getElementById("adca").value;
+    var adcaname = document.getElementById("adcaname").value;
+	if( m == 'ed' && adteacher.length > 5 ) {
+       alert("set Education role account");	
+	   javaContract.setActor(adteacher,"teacher", adschool,{from: Admin});
+	   return;
+	}
+	if( m == 'co' &&  adcompany.length > 5 ) {	
+       alert("set company");	
+	   javaContract.setActor(adcompany,"company", adconame,{from: Admin});
+	   return;
+	}
+	if( m == 'ca' && adca.length > 5 ) {	
+      alert("set ca");	
+	   javaContract.setActor(adca, "prizer", adcaname,{from: Admin});
+	   return;
+	}
+	
+}
+function recommend() {
+  if (javaContract == null) {
+    alert("please set Rpc node and Contract address first!");
+    return;
+  } 	
+	var recommend = document.getElementById("recommend").value;
+	unlock(recommend);
+	var restid = document.getElementById("restid").value;
+    var recoid = document.getElementById("recoid").value;
+	var ret = javaContract.recommend(restid,recoid,{from: recommend})
+	alert(ret);
+}
+function resume() {
+  if (javaContract == null) {
+    alert("please set Rpc node and Contract address first!");
+    return;
+  } 	
+    var s = "";
+	var resumeid = document.getElementById("resumeid").value;	
+	var js = javaContract.resume(resumeid,"basic");
+	if(js != ""){
+	   arr = js.split('@');
+	   s += "<br><b>name: </b>"+arr[0];
+	   s += "<br>sex: "+arr[1];
+	   s += "<br>age: "+arr[2];	   
+	}
+	js = javaContract.resume(resumeid,"contact");
+	if(js != ""){
+	   s += "<br>contact: "+js;
+	}
+	//document.getElementById("resumeAll").innerHTML = s;
+	//return;
+	s += "<hr><b>education: </b><br>";
+	js = javaContract.resume(resumeid,"education");
+	s +=  js;
+	/*
+	if(js != "" || js != "@nil"){
+	   j = JSON.parse(js);
+	   for(i=0; i<j.length; i++ ){
+	   arr = js.split('@');
+	   s += "\nname:"+arr[0];
+	   s += "\nsex:"+arr[1];
+	   s += "\nage:"+arr[2];	   
+	   }
+	}*/
+	s += "<hr><b>prize:</b><br>";
+	js = javaContract.resume(resumeid,"prize");
+	s +=  js;
+
+	s += "<hr><b>company: </b><br> entry:<br>";
+	js = javaContract.resume(resumeid,"entry");
+	s +=  js;
+
+	s += "<br><br>leave:<br>";
+	js = javaContract.resume(resumeid,"leave");
+	s +=  js;
+
+	document.getElementById("resumeAll").innerHTML = s;
+	
+}
+function setContract() {
+ var rpcnode = document.getElementById('rpcnode').value;
+ if(rpcnode=="")
+    rpcnode =  rpcnodeAddress;
+
+ web3.setProvider(new web3.providers.HttpProvider(rpcnode));
+ var addr = document.getElementById('Contract').value;
+ if(addr=="")
+    addr =  contractAddress;
+ javaContract = my.at(addr); 
+}
+
+function init(){
+   document.getElementById('rpcnode').value= rpcnodeAddress;
+   document.getElementById('Contract').value = contractAddress;
+   document.getElementById('Password').value = accPasswd;
+}
+
+</script>
+<body onload="init()">
+<H3 align=center>Human resource management</H3>
+<br>
+<br>
+Rpc node:<input id=rpcnode value="">&nbsp;&nbsp;&nbsp;&nbsp;Contract address:<input id=Contract value=""> <Button onclick="setContract()"><B>Set</B></Button><hr>
+<br>
+
+<form action="" method="get">
+<B>Role ?</B>
+<label><input checked onclick="on_actor_click(1)"  name="Fruit" type="radio" value="" />Student</label><input style="width:120px" id=Student value="0x6ea59f8f880b7becae9d4ccdf9513fa07ae57d64">
+<label><input onclick="on_actor_click(2)"  name="Fruit" type="radio" value="" />Education authority</label><input style="width:120px" id=Education value="0x62dde8ccbbba6c4c03c0bb92a4b359ea0425f91e">
+<label><input onclick="on_actor_click(3)"  name="Fruit" type="radio" value="" />Certification authority</label><input style="width:120px" id=Certification value="0xa82df9363de13dfacdef77a33ba62281ad0a140c">
+<label><input onclick="on_actor_click(4)"  name="Fruit" type="radio" value="" />Company</label><input style="width:120px" id=Company value="0x9de5cbf6aa4978f643a1125e4b1764b09833e530">
+<label><input onclick="on_actor_click(5)"  name="Fruit" type="radio" value="" />Admin</label><input style="width:120px" id=Admin value="0x0324cd97f5797aef0d3312c356112af17690148a">
+<br>
+Password:<input id=Password value="">
+
+</form>
+<hr>
+<details id=div1 open="open">
+<summary>Student register:</summary>
+<br><B>basic:</B>
+<br>name:<input id=stname value="">
+<br>sex:<input id=stsex value="">
+<br>age:<input id=stage value="">
+<br>contact:<input id=stcontact value="">
+<br><br>
+<button onclick="register()"><B>Submit</B></button>
+</details>
+<hr>
+<details id=div2>
+<summary>Education authentication:</summary>
+<br>Student id:<input id=edstid value="">
+<br>date from:<input id=eddatefrom value=""> to:<input id=eddateto value="">
+<br>major:<input id=edmajor value="">
+<br><br>
+<button  onclick="ed_auth()"><B>Submit</B></button>
+</details>
+<hr>
+<details id=div3>
+<summary>Certification authentication:</summary>
+<br>Student id:<input id=castdid value="">
+<br>name:<input id=caname value="">
+<br>date:<input id=cadate value="">
+<br><br>
+<button onclick="ca_auth()" ><B>Submit</B></button>
+</details>
+<hr>
+<details id=div4>
+<summary>Company</summary>
+<B>Entry:</B>
+<br>Student id:<input id=costid1 value="">
+<br>date:<input id=indate value="">
+<br>position:<input id=position value="">
+<br><br>
+<button onclick="co_auth(1)"><B>Submit</B></button>
+<hr>
+<B>Leave:</B>
+<br>Student id:<input id=costid2 value="">
+<br>date:<input id=outdate value="">
+<br>desc:<input id=ledesc value="">
+<br><br>
+<button onclick="co_auth(2)"><B>Submit</B></button>
+</details>
+<hr>
+<details id=div5>
+<summary>Admin</summary>
+<B>Add role:</B>
+<br>Teacher:<input id=adteacher value=""><input id=adschool value=""><button onclick="admin('ed')"><B>Set</B></button>
+<br>Company:<input id=adcompany value=""><input id=adconame value=""><button onclick="admin('co')"><B>Set</B></button>
+<br>Certification authority:<input id=adca  value=""><input id=adcaname value=""><button onclick="admin('ca')"><B>Set</B></button>
+<br><br>
+</details>
+
+<hr>
+<br>Student id:<input id=restid value=""> Company:<input id=recoid value="">your address:<input id=recommend value=""><button onclick="recommend()"><B>Recommend</B></button>
+<hr>
+<br>
+Student id:<input id=resumeid value=""> <Button onclick="resume()"><B>Resume</B></Button>
+<hr>
+<span id=resumeAll></span>

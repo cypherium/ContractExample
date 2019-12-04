@@ -1,11 +1,9 @@
 import javax.cypher.Cypnet;
 
-public class HelloWorld {
+public class _cypher_contract {
     public static void main(String[] args) {
         long totalSupply = 10000;
-        //我们创建一个 符号为Hello,名称为Hello world,发行总量为10000的代币。
         Cypnet.setTokenInfo("Hello", "Hello world", totalSupply, "");
-        //把发行的代币全都给合约创建者
         Cypnet.changeBalance("caller", totalSupply);
         System.out.println("Hello");
     }
@@ -25,7 +23,7 @@ public class HelloWorld {
         return s;
     }
 
-    public static String setValue(String skey, String sValue) {
+    public static String setValue(String _to, String skey, String sValue) {
         Cypnet.setState(skey, sValue);
         return "ok";
     }

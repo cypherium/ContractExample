@@ -2,73 +2,83 @@
 <html>
 <head>
 <script type="text/javascript" src="web3.js"></script>
-<script type="text/javascript">
-	var accPasswd = "1";
-	var sFrom = null;
-	var sTo = null;
-	
+<script type="text/javascript">	
     var Web3 = require('web3');
     var web3 = new Web3();
-    web3.setProvider(new web3.providers.HttpProvider("http://52.42.69.238:18002"));
-	//web3.setProvider(new web3.providers.HttpProvider("http://localhost:18002"));
-
 	var abi=
-	[{"constant":true,"inputs":[],"name":"name","outputs":       [{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"}
-	,{"constant":true,"inputs":[],"name":"totalSupply","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"}
-	,{"constant":true,"inputs":[],"name":"decimals","outputs":   [{"name":"","type":"uint8"}],"payable":false,"stateMutability":"view","type":"function"}
-	,{"constant":true,"inputs":[{"name":"","type":"address"}],"name":"balanceOf","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"}
-	,{"constant":true,"inputs":[],"name":"owner","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"}
-	,{"constant":true,"inputs":[],"name":"symbol","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"}
-	,{"constant":false,"inputs":[{"name":"_to","type":"address"},{"name":"_value","type":"uint256"}],"name":"transfer","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"}
-	,{"constant":false,"inputs":[{"name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"}
-	,{"inputs":[{"name":"initialSupply","type":"uint256"},{"name":"tokenName","type":"string"},{"name":"tokenSymbol","type":"string"}],"payable":false,"stateMutability":"nonpayable","type":"constructor"}
-	,{"anonymous":false,"inputs":[{"indexed":true,"name":"from","type":"address"},{"indexed":true,"name":"to","type":"address"},{"indexed":false,"name":"value","type":"uint256"}],"name":"Transfer","type":"event"}]
+	[{"name":"name"       ,"constant":true,"inputs":[],"outputs":[{"name":"","type":"string"}],"type":"function"},
+	 {"name":"totalSupply","constant":true,"inputs":[],"outputs":[{"name":"","type":"uint256"}],"type":"function"},
+	 {"name":"symbol"     ,"constant":true,"inputs":[],"outputs":[{"name":"","type":"string"}],"type":"function"},
+	 {"name":"balanceOf"  ,"constant":true,"inputs":[{"name":"addr","type":"address"}],"outputs":[{"name":"","type":"uint256"}],"type":"function"},
+	 {"inputs":[{"name":"initialSupply","type":"uint256"},{"name":"tokenName","type":"string"},{"name":"tokenSymbol","type":"string"}],"stateMutability":"nonpayable","type":"constructor"}	
+	];
 	
 	var my =  web3.cph.contract(abi);
-	var javaContract, cphContract;
-	
+
+	var javaContract, ethContract;
+	var transactionHash = null;
+	var transactionHash1 = null;
+
+	function trySetContract(){
+		if( transactionHash != null ){
+			receipt =  web3.cph.getTransactionReceipt(transactionHash);
+			if( receipt != null ) {
+				document.getElementById('ContractAddress1').innerText = receipt.contractAddress;
+				javaContract = my.at(receipt.contractAddress);	
+				transactionHash = null
+				return
+			}
+		}			
+	    setTimeout(trySetContract, 2000);		
+	}
+
+	function trySetContract1(){
+		if( transactionHash1 != null ){
+			receipt =  web3.cph.getTransactionReceipt(transactionHash1);
+			if( receipt != null ) {
+				document.getElementById('ContractAddress2').innerText = receipt.contractAddress;
+				ethContract = my.at(receipt.contractAddress);	
+				transactionHash1 = null
+				return
+			}
+		}			
+	    setTimeout(trySetContract, 2000);		
+	}
+			  
 	function deployContract(stype){
-		sFrom = document.getElementById('Acc1').value;
-		sTo = document.getElementById('Acc2').value;
-		
+		var sFrom = document.getElementById('Acc1').value;
 		if( sFrom.length < 40 ) return;
+		var  sTo = document.getElementById('Acc2').value;
+		var pwd = document.getElementById('Password').value		
+		web3.setProvider(new web3.providers.HttpProvider(document.getElementById('rpcnode').value));
+		web3.personal.unlockAccount(sFrom, pwd);
+		
 		if( stype=="java" ) {
-			setButtonDisable('java',true);
-			web3.personal.unlockAccount(sFrom, accPasswd)
-			var code = document.getElementById('javabytes').value;			
-			javaContract = my.new("my",{from:sFrom, data:code,gas:1000000},function (e, contract){
+			var code = document.getElementById('javabytes').value;
+			temp = my.new("my",{from:sFrom, data:code,gas:8000000},function (e, contract){
 					if( e != null ){
 						alert(e);
 						return;
 					}
 					if( typeof(contract.address) != 'undefined' || typeof(contract.transactionHash) != 'undefined'  ) {
-						 setButtonDisable('java', false);
-						 receipt =  web3.cph.getTransactionReceipt(contract.transactionHash);
-						 alert('Contract address: ' + receipt.contractAddress + ' \n transactionHash: ' + contract.transactionHash);
-						 javaContract = my.at(receipt.contractAddress);
+						 transactionHash = contract.transactionHash;
 					}
 				} );
-			
-			//javaContract = my.at("0xbe3c3786181b7742ec02f531ef35c953412976b9");
+			 setTimeout(trySetContract, 2000);
+			//javaContract = my.at("0xaD33183dCF3Dab0028Fd9d3d2854b25B58469aAf");
 		}else{
-			setButtonDisable('',true);
-			web3.personal.unlockAccount(sFrom, accPasswd);
-			
-			var code = document.getElementById('ethbytes').value;
-			
-			cphContract = my.new("my", {from:sFrom, data:code,gas:1000000},function (e, contract){
+			var code = document.getElementById('ethbytes').value;			
+			temp = my.new("my", {from:sFrom, data:code,gas:1000000},function (e, contract){
 					if( e != null ){
 						alert(e);
 						return;
 					}
-					if( typeof(contract.transactionHash) != 'undefined'  ) {
-						 setButtonDisable('', false);
-						 receipt =  web3.cph.getTransactionReceipt(contract.transactionHash);
-						 alert('Contract address: ' + receipt.contractAddress + ' \n transactionHash: ' + contract.transactionHash);
-						 cphContract = my.at(receipt.contractAddress);
+					if( typeof(contract.address) != 'undefined' || typeof(contract.transactionHash) != 'undefined'  ) {
+						 transactionHash1 = contract.transactionHash;
 					}
 				} );
-			//cphContract = my.at("0x60292327fdaad719e3a61c6262296c0d8288db00");
+			 setTimeout(trySetContract1, 2000);	
+			//ethContract = my.at("0x60292327fdaad719e3a61c6262296c0d8288db00");
 		}
 		alert("Deploy submitted!");
 	}
@@ -76,66 +86,20 @@
 	// cph.getTransactionReceipt("0x7b06c9137d3528129d85e9911cb0cc206c9aa0e79188eec4c4a0c83aecdbd316")
 	
 	function getContractInfo(stype){
-		if( sFrom== null) return;
 		if( stype=="java" ) {
-			alert("contract.address=" + javaContract.address
-			+ "\n name=" + javaContract.name() 
+			alert("contract.address=" + javaContract.address + "\n name=" + javaContract.name() 
 			+ "\n symbol=" + javaContract.symbol() 
 			+ "\n totalSupply=" + javaContract.totalSupply() );
 		}else{
-			alert("contract.address=" + cphContract.address
-			+ "\n name=" + cphContract.name() 
-			+ "\n symbol=" + cphContract.symbol() 
-			+ "\n totalSupply=" + cphContract.totalSupply() );
+			alert("contract.address=" + ethContract.address
+			+ "\n name=" + ethContract.name() 
+			+ "\n symbol=" + ethContract.symbol() 
+			+ "\n totalSupply=" + ethContract.totalSupply() );
 		}
+	}
 		
-	}
-	function getBalanceOf(sModule, sType){
-	    addr = null;
-	    if( sType == 'From' )
-			addr = sFrom;
-		else if( sType == 'To' )
-			addr = sTo;
-		alert("getBalanceOf"+addr);
-		if( addr== null) return;
-		if( sModule =="java" ) {
-			alert(addr + " token balance is: " + javaContract.balanceOf(addr));
-		
-		}else{
-		alert(cphContract);
-			alert(addr + " token balance is: " + cphContract.balanceOf(addr));
-		}
-	}
-	
-	function transferContract(stype,addr){
-		sTo = document.getElementById('Acc2').value;
-		if( sTo.length < 40 ) return;
-		if( stype=="java" ) {
-			v = document.getElementById('transJavaValue').value;
-			javaContract.transfer(sTo, v, {from: sFrom});
-		}else{
-			v = document.getElementById('transEthValue').value;
-			cphContract.transfer(sTo, v, {from: sFrom});
-		}
-		alert("Transfer submitted!");
-	}
-
-	function setButtonDisable(sFrom, bDisable){
-		if( sFrom == "java") {
-			document.getElementById('getContractInfo0').disabled = bDisable;
-			document.getElementById('getBalanceOf01').disabled = bDisable;
-			document.getElementById('getBalanceOf02').disabled = bDisable;
-			document.getElementById('Transfer0').disabled = bDisable;
-		}else{
-			document.getElementById('getContractInfo1').disabled = bDisable;
-			document.getElementById('getBalanceOf11').disabled = bDisable;
-			document.getElementById('getBalanceOf12').disabled = bDisable;
-			document.getElementById('Transfer1').disabled = bDisable;
-		}
-	}
-	
 	function create_account(n){
-		sAddr =  web3.personal.newAccount(accPasswd);
+		sAddr =  web3.personal.newAccount(document.getElementById('Password').value);
 		if( n==1 )
 			sFrom = sAddr;
 		else 
@@ -147,27 +111,20 @@
 </head>
 <body>
 <H3 align=center>Contract Demo </H3>
-From Account<button onClick="create_account(1)">Create</button> : <input id="Acc1" style='width:350px' value="0x01482d12a73186e9e0ac1421eb96381bbdcd4557">
-&nbsp;&nbsp;&nbsp;&nbsp;
-To Account<button onClick="create_account(2)">Create</button> : <input id="Acc2" style='width:350px' value="0x004049d5769fba80e40dfe6e98d2165fcebe943b">
+Rpc node:<input id=rpcnode value="http://localhost:8002"><hr>
+
+From Account<button onClick="create_account(1)">Create</button> : <input id="Acc1" style='width:300px' value="0x0324cd97f5797aef0d3312c356112af17690148a">
+&nbsp;&nbsp;Password:<input id="Password" style='width:60px' value="1">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+To Account<button onClick="create_account(2)">Create</button> : <input id="Acc2" style='width:300px' value="0x004049d5769fba80e40dfe6e98d2165fcebe943b">
 <hr><br>
     Java contract bytecode: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 	<button onClick="deployContract('java');">Deploy</button>&nbsp;&nbsp;&nbsp;&nbsp;
-	<button id="getContractInfo0" disabled onClick="getContractInfo('java');">Get contract info</button>&nbsp;&nbsp;&nbsp;&nbsp; 
-	<button id="getBalanceOf01" disabled onClick="getBalanceOf('java','From');">From's Balance</button>&nbsp;&nbsp;&nbsp;&nbsp; 
-	<button id="getBalanceOf02"  disabled onClick="getBalanceOf('java','To');">To's Balance</button>&nbsp;&nbsp;&nbsp;&nbsp; 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<input id="transJavaValue" style='width:80px' value="100"> &nbsp;&nbsp;&nbsp;&nbsp;
-<button id="Transfer0" disabled onClick="transferContract('java');">Transfer</button>
-	<textarea id="javabytes" cols=185 rows=10>0xcafebabe00000034005a0a001a002d05000000000000271008002e08002f0800300a003100320800330a003100340800350800360a00310037090038003908003a0a003b003c0a0031003d0a0031003e08003f0a003100400800410800420a003b00430800440800450700460700470100063c696e69743e010003282956010004436f646501000f4c696e654e756d6265725461626c650100046d61696e010016285b4c6a6176612f6c616e672f537472696e673b29560100087472616e73666572010027284c6a6176612f6c616e672f537472696e673b4a294c6a6176612f6c616e672f537472696e673b01000d537461636b4d61705461626c6501000867657456616c7565010026284c6a6176612f6c616e672f537472696e673b294c6a6176612f6c616e672f537472696e673b01000873657456616c7565010038284c6a6176612f6c616e672f537472696e673b4c6a6176612f6c616e672f537472696e673b294c6a6176612f6c616e672f537472696e673b01000967657456616c75653101001428294c6a6176612f6c616e672f537472696e673b01000967657456616c75653201000a536f7572636546696c6501000f48656c6c6f576f726c642e6a6176610c001b001c01000548656c6c6f01000b48656c6c6f20776f726c640100000700480c0049004a01000663616c6c65720c004b004c0100047465737401001048656c6c6f20776f726c6420746573740c004d004e07004f0c0050005101001448656c6c6f20776f726c6420436f6e74726163740700520c005300540c005500250c00560057010014496e73756666696369656e742062616c616e63650c00210058010004414141410100026f6b0c0053005901000973647364736473646401000331303001000a48656c6c6f576f726c640100106a6176612f6c616e672f4f626a6563740100136a617661782f6379706865722f4379706e657401000c736574546f6b656e496e666f01003a284c6a6176612f6c616e672f537472696e673b4c6a6176612f6c616e672f537472696e673b4a4c6a6176612f6c616e672f537472696e673b295a01000d6368616e676542616c616e6365010016284c6a6176612f6c616e672f537472696e673b4a295a0100087365745374617465010027284c6a6176612f6c616e672f537472696e673b4c6a6176612f6c616e672f537472696e673b295a0100106a6176612f6c616e672f53797374656d0100036f75740100154c6a6176612f696f2f5072696e7453747265616d3b0100136a6176612f696f2f5072696e7453747265616d0100077072696e746c6e010015284c6a6176612f6c616e672f537472696e673b2956010008676574537461746501000962616c616e63654f66010015284c6a6176612f6c616e672f537472696e673b294a010028284c6a6176612f6c616e672f537472696e673b4c6a6176612f6c616e672f537472696e673b4a295a0100042849295600210019001a0000000000070001001b001c0001001d0000001d00010001000000052ab70001b100000001001e000000060001000000030009001f00200001001d00000068000500040000003414000240120412051f1206b800075712081fb8000957120a120bb8000c57b2000d120eb6000f120ab800104eb2000d2db6000fb100000001001e0000002200080000000500040008000f00090016000b001e000c0026000e002c000f003300100009002100220001001d0000007a00040006000000351208b80011370416041f949c00061212b012082a1fb8001357120ab800104eb2000d2db6000f1214b800104eb2000d2db6000f01b000000002001e0000002600090000001400070015000e0017001100190019001b001f001c0026001e002c001f003300210023000000070001fd001100040009002400250001001d0000002300010002000000072ab800104c2bb000000001001e0000000a000200000025000500260009002600270001001d0000002500020002000000092a2bb8000c571215b000000001001e0000000a0002000000290006002a0009002800290001001d0000004e0002000100000019033b1a112710a20010b2000d1ab60016840001a7ffef1217b000000002001e0000001600050000003e000200400009004100100042001600440023000000070002fc000201130009002a00290001001d0000001b00010000000000031218b000000001001e000000060001000000470001002b00000002002c</textarea>
+	<button id="getContractInfo0"  onClick="getContractInfo('java');">Get contract info</button>&nbsp;&nbsp;<span id=ContractAddress1></span><br>
+	<textarea id="javabytes" cols=185 rows=10>0xcafebabe0000003400480a001300230500000000000027100800240800250800260a002700280800290a0027002a09002b002c0a002d002e0a0027002f0800300a002700310a002700320a002700330800340700350700360100063c696e69743e010003282956010004436f646501000f4c696e654e756d6265725461626c650100046d61696e010016285b4c6a6176612f6c616e672f537472696e673b29560100087472616e73666572010027284c6a6176612f6c616e672f537472696e673b4a294c6a6176612f6c616e672f537472696e673b01000d537461636b4d61705461626c6501000867657456616c7565010026284c6a6176612f6c616e672f537472696e673b294c6a6176612f6c616e672f537472696e673b01000873657456616c756501004a284c6a6176612f6c616e672f537472696e673b4c6a6176612f6c616e672f537472696e673b4c6a6176612f6c616e672f537472696e673b294c6a6176612f6c616e672f537472696e673b01000a536f7572636546696c650100155f6379706865725f636f6e74726163742e6a6176610c0014001501000548656c6c6f01000b48656c6c6f20776f726c640100000700370c0038003901000663616c6c65720c003a003b07003c0c003d003e07003f0c004000410c00420043010014496e73756666696369656e742062616c616e63650c001a00440c0045001e0c004600470100026f6b0100105f6379706865725f636f6e74726163740100106a6176612f6c616e672f4f626a6563740100136a617661782f6379706865722f4379706e657401000c736574546f6b656e496e666f01003a284c6a6176612f6c616e672f537472696e673b4c6a6176612f6c616e672f537472696e673b4a4c6a6176612f6c616e672f537472696e673b295a01000d6368616e676542616c616e6365010016284c6a6176612f6c616e672f537472696e673b4a295a0100106a6176612f6c616e672f53797374656d0100036f75740100154c6a6176612f696f2f5072696e7453747265616d3b0100136a6176612f696f2f5072696e7453747265616d0100077072696e746c6e010015284c6a6176612f6c616e672f537472696e673b295601000962616c616e63654f66010015284c6a6176612f6c616e672f537472696e673b294a010028284c6a6176612f6c616e672f537472696e673b4c6a6176612f6c616e672f537472696e673b4a295a01000867657453746174650100087365745374617465010027284c6a6176612f6c616e672f537472696e673b4c6a6176612f6c616e672f537472696e673b295a002100120013000000000005000100140015000100160000001d00010001000000052ab70001b1000000010017000000060001000000030009001800190001001600000047000500030000001f14000240120412051f1206b800075712081fb8000957b2000a1204b6000bb10000000100170000001600050000000500040006000f000700160008001e00090009001a001b000100160000004d00040005000000191208b8000c42211f949c0006120db012082a1fb8000e5701b00000000200170000001600050000000c0006000d000c000f000f001100170012001c000000060001fc000f040009001d001e000100160000002300010002000000072ab8000f4c2bb00000000100170000000a000200000016000500170009001f0020000100160000002500020003000000092b2cb80010571211b00000000100170000000a00020000001b0006001c00010021000000020022</textarea>
     <br>Solidity contract bytecode:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 	<button onClick="deployContract('');">Deploy</button>&nbsp;&nbsp;&nbsp;&nbsp;
-	<button id="getContractInfo1" disabled onClick="getContractInfo('');">Get contract info</button>&nbsp;&nbsp;&nbsp;&nbsp;
-	<button id="getBalanceOf11" disabled onClick="getBalanceOf('eth','From');">From's Balance</button>&nbsp;&nbsp;&nbsp;&nbsp; 
-	<button id="getBalanceOf12" disabled onClick="getBalanceOf('eth','To');">To's Balance</button>&nbsp;&nbsp;&nbsp;&nbsp; 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<input id="transEthValue" style='width:80px' value="100"> &nbsp;&nbsp;&nbsp;&nbsp;
-<button id="Transfer1" disabled onClick="transferContract('eth');">Transfer</button>
+	<button id="getContractInfo1"  onClick="getContractInfo('');">Get contract info</button>&nbsp;&nbsp;<span id=ContractAddress2></span><br>
 	<textarea id="ethbytes" cols=185 rows=10>0x60606040526003805460ff19166012179055341561001c57600080fd5b6040516106bf3803806106bf833981016040528080519190602001805182019190602001805160008054600160a060020a033316600160a060020a03199091168117825560035460ff16600a0a870260048190559082526005602052604090912055909101905060018280516100969291602001906100b3565b5060028180516100aa9291602001906100b3565b5050505061014e565b828054600181600116156101000203166002900490600052602060002090601f016020900481019282601f106100f457805160ff1916838001178555610121565b82800160010185558215610121579182015b82811115610121578251825591602001919060010190610106565b5061012d929150610131565b5090565b61014b91905b8082111561012d5760008155600101610137565b90565b6105628061015d6000396000f30060606040526004361061008d5763ffffffff7c010000000000000000000000000000000000000000000000000000000060003504166306fdde03811461009257806318160ddd1461011c578063313ce5671461014157806370a082311461016a5780638da5cb5b1461018957806395d89b41146101b8578063a9059cbb146101cb578063f2fde38b146101ef575b600080fd5b341561009d57600080fd5b6100a561020e565b60405160208082528190810183818151815260200191508051906020019080838360005b838110156100e15780820151838201526020016100c9565b50505050905090810190601f16801561010e5780820380516001836020036101000a031916815260200191505b509250505060405180910390f35b341561012757600080fd5b61012f6102ac565b60405190815260200160405180910390f35b341561014c57600080fd5b6101546102b2565b60405160ff909116815260200160405180910390f35b341561017557600080fd5b61012f600160a060020a03600435166102bb565b341561019457600080fd5b61019c6102cd565b604051600160a060020a03909116815260200160405180910390f35b34156101c357600080fd5b6100a56102dc565b34156101d657600080fd5b6101ed600160a060020a0360043516602435610347565b005b34156101fa57600080fd5b6101ed600160a060020a0360043516610356565b60018054600181600116156101000203166002900480601f0160208091040260200160405190810160405280929190818152602001828054600181600116156101000203166002900480156102a45780601f10610279576101008083540402835291602001916102a4565b820191906000526020600020905b81548152906001019060200180831161028757829003601f168201915b505050505081565b60045481565b60035460ff1681565b60056020526000908152604090205481565b600054600160a060020a031681565b60028054600181600116156101000203166002900480601f0160208091040260200160405190810160405280929190818152602001828054600181600116156101000203166002900480156102a45780601f10610279576101008083540402835291602001916102a4565b6103523383836103a0565b5050565b60005433600160a060020a0390811691161461037157600080fd5b6000805473ffffffffffffffffffffffffffffffffffffffff1916600160a060020a0392909216919091179055565b6000600160a060020a03831615156103b757600080fd5b600160a060020a038416600090815260056020526040902054829010156103dd57600080fd5b600160a060020a0383166000908152600560205260409020548281011161040357600080fd5b600160a060020a03808516600090815260056020526040808220549286168252902054610430919061050e565b600160a060020a0385166000908152600560205260409020549091506104569083610524565b600160a060020a038086166000908152600560205260408082209390935590851681522054610485908361050e565b600160a060020a03808516600081815260056020526040908190209390935591908616907fddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef9085905190815260200160405180910390a3600160a060020a0380841660009081526005602052604080822054928716825290205401811461050857fe5b50505050565b60008282018381101561051d57fe5b9392505050565b60008183101561053057fe5b509003905600a165627a7a72305820ef52f1fb842a19c293e472e64fafa97cac12ee6b2df258fbd24c7ac03a54fab5002900000000000000000000000000000000000000000000000000000001a13b8600000000000000000000000000000000000000000000000000000000000000006000000000000000000000000000000000000000000000000000000000000000a00000000000000000000000000000000000000000000000000000000000000015636f6d6d6f6e7765616c20636861696e206c6f76650000000000000000000000000000000000000000000000000000000000000000000000000000000000000a434d434c2d746f6b656e00000000000000000000000000000000000000000000</textarea>
     <div id="code"></div> 
     <div id="status"></div>
