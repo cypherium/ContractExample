@@ -188,21 +188,9 @@ function resume() {
 	if(js != ""){
 	   s += "<br>contact: "+js;
 	}
-	document.getElementById("resumeAll").innerHTML = s;
-	return;
 	s += "<hr><b>education: </b><br>";
 	js = javaContract.resume(resumeid,"education");
 	s +=  js;
-	/*
-	if(js != "" || js != "@nil"){
-	   j = JSON.parse(js);
-	   for(i=0; i<j.length; i++ ){
-	   arr = js.split('@');
-	   s += "\nname:"+arr[0];
-	   s += "\nsex:"+arr[1];
-	   s += "\nage:"+arr[2];	   
-	   }
-	}*/
 	s += "<hr><b>prize:</b><br>";
 	js = javaContract.resume(resumeid,"prize");
 	s +=  js;
