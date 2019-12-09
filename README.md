@@ -1,7 +1,7 @@
 # Cypherium Java Smart Contract Tutorial
 
 ## Run your cypher Node accord to the README file begin
-[README](https://github.com/cypherium/CypherTestBin/blob/master/README.md) for run cypher Node
+[CypherTestBin](https://github.com/cypherium/CypherTestBin/blob/master/README.md) Tutorial for run cypher Node
 
 ## Environmental configuration
 
