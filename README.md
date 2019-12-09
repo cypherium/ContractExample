@@ -1,5 +1,8 @@
 # Cypherium Java Smart Contract Tutorial
 
+## Run your cypher Node accord to the README file begin
+[README](https://github.com/cypherium/CypherTestBin/blob/master/README.md) for run cypher Node
+
 ## Environmental configuration
 
 Cypherium’s Java Smart Contract system need JDK1.8 support.So Please install JDK1.8. To learn how to configure the environment of JDK1.8, refer to Java’s online literature.
@@ -86,9 +89,9 @@ Change the node ip value and account password value
  web3.setProvider(​new web3​.providers.HttpProvider(​"http://54.244.144.111:18002"​));
 ```
 The ip "54.244.144.111" please replace it by your VPS node or public machine  node's external ip.
-*  Change the accPasswd which it's default value is `1` according to your node's account password which created before:
+*  Change the accPasswd which it's default value is `cypher2019test` according to your node's account password which created before:
  ```
- var accPasswd = "1";
+ var accPasswd = "cypher2019test";
  ```
 ### Deploy by using index.html tool
 After the Prepare is completed, open the `index.html` deploy tool with google chrome browser,as shown below:
