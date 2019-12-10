@@ -68,7 +68,7 @@ A HelloWorld.class will be generated in the current directory.
 
 In order to deploy your newly generated `HelloWorld.class` on the Cypherium blockchain network, you need to convert the binary file into string format. We provide one file2str tool to complete this step (similar tools on the network are also available):
 
-We provide executable files for Linux, Mac, and Windows platforms, and users can select the target type according to your OS systems.
+We provide executable files for Linux, Mac platforms, and users can select the target type according to your OS systems.
 
 ### Generate string format
 Suppose you local at `src` folder and you OS are linux,Below is the usage:
