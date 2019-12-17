@@ -7,17 +7,19 @@
 
 Cypherium’s Java Smart Contract system need JDK1.8 support.So Please install JDK1.8. To learn how to configure the environment of JDK1.8, refer to Java’s online literature.
 
-After you have configured your JDK environment, execute javac --version in the Console environment to confirm whether it is 1.8.xxx
+After you have configured your JDK environment, execute javac --version in the Console environment to confirm whether it is 1.8.xxx.Below install commands is for ubuntu:
 
 ```
-$​ javac -version 
-javac 1.8.xxx
+sudo apt install openjdk-8-jre-headless -y
+sudo apt install openjdk-8-jdk-headless
+javac -version
+
 ```
 Download repository
 
  ```
-  $​git clone https://github.com/cypherium/ContractExample.git
-  $​cd ContractExample
+  git clone https://github.com/cypherium/ContractExample.git
+
  ```
 
 ## Write and Compile smart contract
@@ -25,41 +27,29 @@ Download repository
 Firstly, we can create one simple HelloWorld smart contract as follows:
 
 ```
-import​ javax.cypher.Cypnet; 
-public​ class HelloWorld {
-    public​ ​static​ ​void​ main(​String​[] args) {
-        //We create a token with a total circulation of 10,000 // The symbol is Hello and the name is Hello world 
-        long​ totalSupply = ​10000​;
-        //All the issued tokens to the creator
-        Cypnet.setTokenInfo(​"Hello"​, ​"Hello world"​, totalSupply, ​""​); 
-        Cypnet.changeBalance(​"caller"​, totalSupply);
-        System.out.​println​(​"Hello"​); 
-    }
+import javax.cypher.Cypnet;
+import mjson.Json;
 
-    public​ ​static​ ​String​ ​transfer​(​String​ _to, ​long​ _value) { 
-        long​ n = Cypnet.balanceOf(​"caller"​);
-        if​ (n < _value) {
-            //throw new Exception("Insufficient balance");
-        ​   return​ ​"Insufficient balance"​;
-        }
-        Cypnet.​transfer​(​"caller"​, _to, _value);
-        return​ null;
-    }
-    public​ ​static​ ​String​ getValue(​String​ skey) {
-        String​ s = Cypnet.getState(skey);
-        return​ s;
-    }
-    public​ ​static​ ​String​ setValue(​String​ skey, ​String​ sValue) {
-        Cypnet.setState(skey, sValue); return​ ​"ok"​;
-    }
-}    
+public class _cypher_contract {
+
+	static Json defj = Json.object();
+
+    public static void main(String[] args) {
+        long totalSupply = 10000;
+	    System.out.println("main");
+		//Set token information
+		Cypnet.setTokenInfo("HR", "HR Coin", totalSupply, "" );
+       // Cypnet.changeBalance("caller", totalSupply);
+
+	}
+	......
 ```
 
-Compile HelloWorld.java and execute the following command:
+Compile _cypher_contract.java and execute the following command:
 
 ```
-$ cd ContractExample/src
-$​ javac -cp ./jdk/classes HelloWorld.java
+ cd ContractExample/src/cases/HR/
+ javac -cp ../../jdk/classes _cypher_contract.java
 ```
 
 A HelloWorld.class will be generated in the current directory.

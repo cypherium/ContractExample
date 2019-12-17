@@ -1,6 +1,6 @@
 import javax.cypher.Cypnet;
 import mjson.Json;
-
+ 
 public class _cypher_contract {
 	
 	static Json defj = Json.object();
