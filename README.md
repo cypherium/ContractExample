@@ -73,11 +73,6 @@ Suppose you local at `src` folder and you OS are linux,Below is the usage:
 
 ![](./smart_contract_file2str.png)
 
-### Prepare tow account address
-Please approve your CypherBin node (VPS node or public machine node) has tow accounts by using `cph.accounts` check this.If not,your creat enough account by command `personal.newAccount()` function.
-Also you should approve one of your account balance is not 0.
-
-
 ### Deploy smart contract by cypher console
 
  #### Eidt abi and Defines a contract class
