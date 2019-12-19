@@ -23,8 +23,12 @@ Download repository
  ```
 
 ## Write and Compile smart contract
-
-Firstly, we can create one simple  smart contract as follows:
+Before you want to deploy smart contract,you should confirm your account'cosin is enough (1000000000000000000 around),
+if no,please take part in pow work to become a committee member to get reward or contact us to transfer some to you.
+ ```
+ cph.getBalance(cph.accounts[0])//cph.getBalance("0x461f9d24b10edca41c1d9296f971c5c028e6c64c")
+ ```
+### Ok,as all the ready word has been done,we can create one simple  smart contract as follows:
 
 ```
 import javax.cypher.Cypnet;
@@ -44,8 +48,8 @@ public class _cypher_contract {
 	}
 	......
 ```
-
-Compile _cypher_contract.java and execute the following command:
+Caution:please do not edit the `_cypher_contract` class name
+### Compile _cypher_contract.java and execute the following command:
 
 ```
  cd ContractExample/src/cases/HR/
