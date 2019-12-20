@@ -1,6 +1,6 @@
 # Cypherium Java Smart Contract Tutorial
 
-## Run your cypher Node accord to the README file begin
+## Run your cypher Node accord to the README file begin,update the txBlockNumber and keyBlockNumber to the latest number.
 [CypherTestBin](https://github.com/cypherium/CypherTestBin/blob/master/README.md) Tutorial for run cypher Node
 
 ## Environmental configuration
