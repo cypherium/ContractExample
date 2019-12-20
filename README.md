@@ -110,8 +110,9 @@ theSample=sample.new(1,{from:cph.accounts[0],data:SampleHEX,gas:3000000})
 Open the HR.htm by your chrome by desktop OS
 After deploying the  Smart Contract according to the above diagram, you can click `Get contract info`, `From's Balance`, `To's Balance`, `Transfer` to perform related smart contract executions.
 ### Get contract address
+ ```
  cph.getTransactionReceipt("0x3ecde60e82d301c8ccb7846d01ed8eae900fc25b8363e638fc3f63a246d19118")
-
+  ```
 {
   blockHash: "0x143554d1cfb1cf3be26209f636ed61def145e1450fc193a1c3064cc586cdd354",
   blockNumber: 328,
