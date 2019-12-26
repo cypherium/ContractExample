@@ -910,7 +910,7 @@ var SolidityParam = require('./param');
  * @returns {SolidityParam}
  */
 var formatInputInt = function (value) {
-    BigNumber.config(c.ETH_BIGNUMBER_ROUNDING_MODE);
+    BigNumber.config(c.CPH_BIGNUMBER_ROUNDING_MODE);
     var result = utils.padLeft(utils.toTwosComplement(value).toString(16), 64);
     return new SolidityParam(result);
 };
@@ -1742,45 +1742,45 @@ if (typeof XMLHttpRequest === 'undefined') {
  */
 
 
-/// required to define ETH_BIGNUMBER_ROUNDING_MODE
+/// required to define CPH_BIGNUMBER_ROUNDING_MODE
 var BigNumber = require('bignumber.js');
 
-var ETH_UNITS = [
+var CPH_UNITS = [
     'wei',
     'kwei',
     'Mwei',
     'Gwei',
     'szabo',
     'finney',
-    'femtoether',
-    'picoether',
-    'nanoether',
-    'microether',
-    'milliether',
+    'femtocpher',
+    'picocpher',
+    'nanocpher',
+    'microcpher',
+    'millicpher',
     'nano',
     'micro',
     'milli',
-    'ether',
+    'cpher',
     'grand',
-    'Mether',
-    'Gether',
-    'Tether',
-    'Pether',
-    'Eether',
-    'Zether',
-    'Yether',
-    'Nether',
-    'Dether',
-    'Vether',
-    'Uether'
+    'Mcpher',
+    'Gcpher',
+    'Tcpher',
+    'Pcpher',
+    'Ecpher',
+    'Zcpher',
+    'Ycpher',
+    'Ncpher',
+    'Dcpher',
+    'Vcpher',
+    'Ucpher'
 ];
 
 module.exports = {
-    ETH_PADDING: 32,
-    ETH_SIGNATURE_LENGTH: 4,
-    ETH_UNITS: ETH_UNITS,
-    ETH_BIGNUMBER_ROUNDING_MODE: { ROUNDING_MODE: BigNumber.ROUND_DOWN },
-    ETH_POLLING_TIMEOUT: 1000/2,
+    CPH_PADDING: 32,
+    CPH_SIGNATURE_LENGTH: 4,
+    CPH_UNITS: CPH_UNITS,
+    CPH_BIGNUMBER_ROUNDING_MODE: { ROUNDING_MODE: BigNumber.ROUND_DOWN },
+    CPH_POLLING_TIMEOUT: 1000/2,
     defaultBlock: 'latest',
     defaultAccount: undefined
 };
@@ -1868,33 +1868,33 @@ var sha3 = require('./sha3.js');
 var utf8 = require('utf8');
 
 var unitMap = {
-    'noether':      '0',
+    'nocpher':      '0',
     'wei':          '1',
     'kwei':         '1000',
     'Kwei':         '1000',
     'babbage':      '1000',
-    'femtoether':   '1000',
+    'femtocpher':   '1000',
     'mwei':         '1000000',
     'Mwei':         '1000000',
     'lovelace':     '1000000',
-    'picoether':    '1000000',
+    'picocpher':    '1000000',
     'gwei':         '1000000000',
     'Gwei':         '1000000000',
     'shannon':      '1000000000',
-    'nanoether':    '1000000000',
+    'nanocpher':    '1000000000',
     'nano':         '1000000000',
     'szabo':        '1000000000000',
-    'microether':   '1000000000000',
+    'microcpher':   '1000000000000',
     'micro':        '1000000000000',
     'finney':       '1000000000000000',
-    'milliether':   '1000000000000000',
+    'millicpher':   '1000000000000000',
     'milli':        '1000000000000000',
-    'ether':        '1000000000000000000',
-    'kether':       '1000000000000000000000',
+    'cpher':        '1000000000000000000',
+    'kcpher':       '1000000000000000000000',
     'grand':        '1000000000000000000000',
-    'mether':       '1000000000000000000000000',
-    'gether':       '1000000000000000000000000000',
-    'tether':       '1000000000000000000000000000000'
+    'mcpher':       '1000000000000000000000000',
+    'gcpher':       '1000000000000000000000000000',
+    'tcpher':       '1000000000000000000000000000000'
 };
 
 /**
@@ -2121,12 +2121,12 @@ var toHex = function (val) {
  * Returns value of unit in Wei
  *
  * @method getValueOfUnit
- * @param {String} unit the unit to convert to, default ether
+ * @param {String} unit the unit to convert to, default cpher
  * @returns {BigNumber} value of the unit (in Wei)
  * @throws error if the unit is not correct:w
  */
 var getValueOfUnit = function (unit) {
-    unit = unit ? unit.toLowerCase() : 'ether';
+    unit = unit ? unit.toLowerCase() : 'cpher';
     var unitValue = unitMap[unit];
     if (unitValue === undefined) {
         throw new Error('This unit doesn\'t exists, please use the one of the following units' + JSON.stringify(unitMap, null, 2));
@@ -2135,7 +2135,7 @@ var getValueOfUnit = function (unit) {
 };
 
 /**
- * Takes a number of wei and converts it to any other ether unit.
+ * Takes a number of wei and converts it to any other cpher unit.
  *
  * Possible units are:
  *   SI Short   SI Full        Effigy       Other
@@ -2144,7 +2144,7 @@ var getValueOfUnit = function (unit) {
  * - gwei       nanoether      shannon      nano
  * - --         microether     szabo        micro
  * - --         milliether     finney       milli
- * - ether      --             --
+ * - cpher      --             --
  * - kether                    --           grand
  * - mether
  * - gether
@@ -2152,7 +2152,7 @@ var getValueOfUnit = function (unit) {
  *
  * @method fromWei
  * @param {Number|String} number can be a number, number string or a HEX of a decimal
- * @param {String} unit the unit to convert to, default ether
+ * @param {String} unit the unit to convert to, default cpher
  * @return {String|Object} When given a BigNumber object it returns one as well, otherwise a number
 */
 var fromWei = function(number, unit) {
@@ -2171,7 +2171,7 @@ var fromWei = function(number, unit) {
  * - gwei       nanoether      shannon      nano
  * - --         microether     szabo        micro
  * - --         milliether     finney       milli
- * - ether      --             --
+ * - cpher      --             --
  * - kether                    --           grand
  * - mether
  * - gether
@@ -2179,7 +2179,7 @@ var fromWei = function(number, unit) {
  *
  * @method toWei
  * @param {Number|String|BigNumber} number can be a number, number string or a HEX of a decimal
- * @param {String} unit the unit to convert from, default ether
+ * @param {String} unit the unit to convert from, default cpher
  * @return {String|Object} When given a BigNumber object it returns one as well, otherwise a number
 */
 var toWei = function(number, unit) {
@@ -2405,7 +2405,7 @@ var isJson = function (str) {
 };
 
 /**
- * Returns true if given string is a valid Ethereum block header bloom.
+ * Returns true if given string is a valid Cypherium block header bloom.
  *
  * @method isBloom
  * @param {String} hex encoded bloom filter
@@ -2504,7 +2504,7 @@ module.exports={
 
 var RequestManager = require('./web3/requestmanager');
 var Iban = require('./web3/iban');
-var Eth = require('./web3/methods/cph');
+var Cph = require('./web3/methods/cph');
 var DB = require('./web3/methods/db');
 var Shh = require('./web3/methods/shh');
 var Net = require('./web3/methods/net');
@@ -2526,7 +2526,7 @@ var BigNumber = require('bignumber.js');
 function Web3 (provider) {
     this._requestManager = new RequestManager(provider);
     this.currentProvider = provider;
-    this.cph = new Eth(this);
+    this.cph = new Cph(this);
     this.db = new DB(this);
     this.shh = new Shh(this);
     this.net = new Net(this);
@@ -2605,8 +2605,8 @@ var properties = function () {
             inputFormatter: utils.toDecimal
         }),
         new Property({
-            name: 'version.ethereum',
-            getter: 'eth_protocolVersion',
+            name: 'version.cypherium',
+            getter: 'cph_protocolVersion',
             inputFormatter: utils.toDecimal
         }),
         new Property({
@@ -2706,7 +2706,7 @@ AllSolidityEvents.prototype.execute = function (options, callback) {
 
     var o = this.encode(options);
     var formatter = this.decode.bind(this);
-    return new Filter(o, 'eth', this._requestManager, watches.eth(), formatter, callback);
+    return new Filter(o, 'cph', this._requestManager, watches.cph(), formatter, callback);
 };
 
 AllSolidityEvents.prototype.attachToContract = function (contract) {
@@ -2844,7 +2844,7 @@ var addFunctionsToContract = function (contract) {
     contract.abi.filter(function (json) {
         return json.type === 'function';
     }).map(function (json) {
-        return new SolidityFunction(contract._eth, json, contract.address);
+        return new SolidityFunction(contract._cph, json, contract.address);
     }).forEach(function (f) {
         f.attachToContract(contract);
     });
@@ -2862,11 +2862,11 @@ var addEventsToContract = function (contract) {
         return json.type === 'event';
     });
 
-    var All = new AllEvents(contract._eth._requestManager, events, contract.address);
+    var All = new AllEvents(contract._cph._requestManager, events, contract.address);
     All.attachToContract(contract);
 
     events.map(function (json) {
-        return new SolidityEvent(contract._eth._requestManager, json, contract.address);
+        return new SolidityEvent(contract._cph._requestManager, json, contract.address);
     }).forEach(function (e) {
         e.attachToContract(contract);
     });
@@ -2886,7 +2886,7 @@ var checkForContractAddress = function(contract, callback){
         callbackFired = false;
 
     // wait for receipt
-    var filter = contract._eth.filter('latest', function(e){
+    var filter = contract._cph.filter('latest', function(e){
         if (!e && !callbackFired) {
             count++;
 
@@ -2904,10 +2904,10 @@ var checkForContractAddress = function(contract, callback){
 
             } else {
 
-                contract._eth.getTransactionReceipt(contract.transactionHash, function(e, receipt){
+                contract._cph.getTransactionReceipt(contract.transactionHash, function(e, receipt){
                     if(receipt && receipt.blockHash && !callbackFired) {
 
-                        contract._eth.getCode(receipt.contractAddress, function(e, code){
+                        contract._cph.getCode(receipt.contractAddress, function(e, code){
                             /*jshint maxcomplexity: 6 */
 
                             if(callbackFired || !code)
@@ -2950,8 +2950,8 @@ var checkForContractAddress = function(contract, callback){
  * @method ContractFactory
  * @param {Array} abi
  */
-var ContractFactory = function (eth, abi) {
-    this.eth = eth;
+var ContractFactory = function (cph, abi) {
+    this.cph = cph;
     this.abi = abi;
 
     /**
@@ -2967,7 +2967,7 @@ var ContractFactory = function (eth, abi) {
     this.new = function () {
         /*jshint maxcomplexity: 7 */
 
-        var contract = new Contract(this.eth, this.abi);
+        var contract = new Contract(this.cph, this.abi);
 
         // parse arguments
         var options = {}; // required!
@@ -2999,7 +2999,7 @@ var ContractFactory = function (eth, abi) {
         if (callback) {
 
             // wait for the contract address and check if the code was deployed
-            this.eth.sendTransaction(options, function (err, hash) {
+            this.cph.sendTransaction(options, function (err, hash) {
                 if (err) {
                     callback(err);
                 } else {
@@ -3013,7 +3013,7 @@ var ContractFactory = function (eth, abi) {
                 }
             });
         } else {
-            var hash = this.eth.sendTransaction(options);
+            var hash = this.cph.sendTransaction(options);
             // add the transaction hash
             contract.transactionHash = hash;
             checkForContractAddress(contract);
@@ -3048,7 +3048,7 @@ var ContractFactory = function (eth, abi) {
  * otherwise calls callback function (err, contract)
  */
 ContractFactory.prototype.at = function (address, callback) {
-    var contract = new Contract(this.eth, this.abi, address);
+    var contract = new Contract(this.cph, this.abi, address);
 
     // this functions are not part of prototype,
     // because we dont want to spoil the interface
@@ -3088,8 +3088,8 @@ ContractFactory.prototype.getData = function () {
  * @param {Array} abi
  * @param {Address} contract address
  */
-var Contract = function (eth, abi, address) {
-    this._eth = eth;
+var Contract = function (cph, abi, address) {
+    this._cph = cph;
     this.transactionHash = null;
     this.address = address;
     this.abi = abi;
@@ -3332,7 +3332,7 @@ SolidityEvent.prototype.execute = function (indexed, options, callback) {
 
     var o = this.encode(indexed, options);
     var formatter = this.decode.bind(this);
-    return new Filter(o, 'eth', this._requestManager, watches.eth(), formatter, callback);
+    return new Filter(o, 'cph', this._requestManager, watches.cph(), formatter, callback);
 };
 
 /**
@@ -3466,7 +3466,7 @@ var getOptions = function (options, type) {
 
 
     switch(type) {
-        case 'eth':
+        case 'cph':
 
             // make sure topics, get converted to hex
             options.topics = options.topics || [];
@@ -4038,8 +4038,8 @@ var sha3 = require('../utils/sha3');
 /**
  * This prototype should be used to call/sendTransaction to solidity functions
  */
-var SolidityFunction = function (eth, json, address) {
-    this._eth = eth;
+var SolidityFunction = function (cph, json, address) {
+    this._cph = cph;
     this._inputTypes = json.inputs.map(function (i) {
         return i.type;
     });
@@ -4141,12 +4141,12 @@ SolidityFunction.prototype.call = function () {
 
 
     if (!callback) {
-        var output = this._eth.call(payload, defaultBlock);
+        var output = this._cph.call(payload, defaultBlock);
         return this.unpackOutput(output);
     }
 
     var self = this;
-    this._eth.call(payload, defaultBlock, function (error, output) {
+    this._cph.call(payload, defaultBlock, function (error, output) {
         if (error) return callback(error, null);
 
         var unpacked = null;
@@ -4176,10 +4176,10 @@ SolidityFunction.prototype.sendTransaction = function () {
     }
 
     if (!callback) {
-        return this._eth.sendTransaction(payload);
+        return this._cph.sendTransaction(payload);
     }
 
-    this._eth.sendTransaction(payload, callback);
+    this._cph.sendTransaction(payload, callback);
 };
 
 /**
@@ -4193,10 +4193,10 @@ SolidityFunction.prototype.estimateGas = function () {
     var payload = this.toPayload(args);
 
     if (!callback) {
-        return this._eth.estimateGas(payload);
+        return this._cph.estimateGas(payload);
     }
 
-    this._eth.estimateGas(payload, callback);
+    this._cph.estimateGas(payload, callback);
 };
 
 /**
@@ -4245,7 +4245,7 @@ SolidityFunction.prototype.request = function () {
     var format = this.unpackOutput.bind(this);
 
     return {
-        method: this._constant ? 'eth_call' : 'eth_sendTransaction',
+        method: this._constant ? 'cph_call' : 'cph_sendTransaction',
         callback: callback,
         params: [payload],
         format: format
@@ -4544,7 +4544,7 @@ var Iban = function (iban) {
 };
 
 /**
- * This method should be used to create iban object from ethereum address
+ * This method should be used to create iban object from cypherium address
  *
  * @method fromAddress
  * @param {String} address
@@ -4583,7 +4583,7 @@ Iban.fromBban = function (bban) {
  * @return {Iban} the IBAN object
  */
 Iban.createIndirect = function (options) {
-    return Iban.fromBban('ETH' + options.institution + options.identifier);
+    return Iban.fromBban('CPH' + options.institution + options.identifier);
 };
 
 /**
@@ -4605,7 +4605,7 @@ Iban.isValid = function (iban) {
  * @returns {Boolean} true if it is, otherwise false
  */
 Iban.prototype.isValid = function () {
-    return /^XE[0-9]{2}(ETH[0-9A-Z]{13}|[0-9A-Z]{30,31})$/.test(this._iban) &&
+    return /^XE[0-9]{2}(CPH[0-9A-Z]{13}|[0-9A-Z]{30,31})$/.test(this._iban) &&
         mod9710(iso13616Prepare(this._iban)) === 1;
 };
 
@@ -5206,7 +5206,7 @@ var uncleCountCall = function (args) {
     return (utils.isString(args[0]) && args[0].indexOf('0x') === 0) ? 'cph_getUncleCountByBlockHash' : 'cph_getUncleCountByBlockNumber';
 };
 
-function Eth(web3) {
+function Cph(web3) {
     this._requestManager = web3._requestManager;
 
     var self = this;
@@ -5226,7 +5226,7 @@ function Eth(web3) {
     this.sendIBANTransaction = transfer.bind(null, this);
 }
 
-Object.defineProperty(Eth.prototype, 'defaultBlock', {
+Object.defineProperty(Cph.prototype, 'defaultBlock', {
     get: function () {
         return c.defaultBlock;
     },
@@ -5236,7 +5236,7 @@ Object.defineProperty(Eth.prototype, 'defaultBlock', {
     }
 });
 
-Object.defineProperty(Eth.prototype, 'defaultAccount', {
+Object.defineProperty(Cph.prototype, 'defaultAccount', {
     get: function () {
         return c.defaultAccount;
     },
@@ -5295,28 +5295,6 @@ var methods = function () {
         params: 3,
         inputFormatter: [formatters.inputBlockNumberFormatter,null,null],
         outputFormatter: formatters.outputBlockFormatter,
-    });
-    var getKeyBlockByHash = new Method({
-        name: 'getKeyBlockByHash',
-        call: 'cph_getKeyBlockByHash',
-        params: 1,
-        outputFormatter: formatters.outputKeyBlockFormatter
-    });
-    var getTxBlockByHash = new Method({
-        name: 'getTxBlockByHash',
-        call: 'cph_getTxBlockByHash',
-        params: 1,
-        outputFormatter: formatters.outputBlockFormatter
-    });
-    var rollbackKeyChainFrom = new Method({
-        name: 'rollbackKeyChainFrom',
-        call: 'cph_rollbackKeyChainFrom',
-        params: 1
-    });
-    var rollbackTxChainFrom = new Method({
-        name: 'rollbackTxChainFrom',
-        call: 'cph_rollbackTxChainFrom',
-        params: 1
     });
     var getUncle = new Method({
         name: 'getUncle',
@@ -5472,10 +5450,6 @@ var methods = function () {
         getBlock,
         getKeyBlockByNumber,
         getTxBlockByNumber,
-        getKeyBlockByHash,
-        getTxBlockByHash,
-        rollbackKeyChainFrom,
-        rollbackTxChainFrom,
         getUncle,
         getCompilers,
         getBlockTransactionCount,
@@ -5547,28 +5521,28 @@ var properties = function () {
     ];
 };
 
-Eth.prototype.contract = function (abi) {
+Cph.prototype.contract = function (abi) {
     var factory = new Contract(this, abi);
     return factory;
 };
 
-Eth.prototype.filter = function (options, callback, filterCreationErrorCallback) {
-    return new Filter(options, 'eth', this._requestManager, watches.eth(), formatters.outputLogFormatter, callback, filterCreationErrorCallback);
+Cph.prototype.filter = function (options, callback, filterCreationErrorCallback) {
+    return new Filter(options, 'cph', this._requestManager, watches.cph(), formatters.outputLogFormatter, callback, filterCreationErrorCallback);
 };
 
-Eth.prototype.namereg = function () {
+Cph.prototype.namereg = function () {
     return this.contract(namereg.global.abi).at(namereg.global.address);
 };
 
-Eth.prototype.icapNamereg = function () {
+Cph.prototype.icapNamereg = function () {
     return this.contract(namereg.icap.abi).at(namereg.icap.address);
 };
 
-Eth.prototype.isSyncing = function (callback) {
+Cph.prototype.isSyncing = function (callback) {
     return new IsSyncing(this._requestManager, callback);
 };
 
-module.exports = Eth;
+module.exports = Cph;
 
 },{"../../utils/config":18,"../../utils/utils":20,"../contract":25,"../filter":29,"../formatters":30,"../iban":33,"../method":36,"../namereg":44,"../property":45,"../syncing":48,"../transfer":49,"./watches":43}],38:[function(require,module,exports){
 /*
@@ -5675,7 +5649,7 @@ var Net = function (web3) {
     });
 };
 
-/// @returns an array of objects describing web3.eth api properties
+/// @returns an array of objects describing web3.cph api properties
 var properties = function () {
     return [
         new Property({
@@ -5835,7 +5809,7 @@ module.exports = Personal;
 */
 /** @file shh.js
  * @authors:
- *   Fabian Vogelsteller <fabian@ethereum.org>
+ *   Fabian Vogelsteller <fabian@cypherium.org>
  *   Marek Kotewicz <marek@ethcore.io>
  * @date 2017
  */
@@ -5984,7 +5958,7 @@ module.exports = Shh;
  * @author Alex Beregszaszi <alex@rtfs.hu>
  * @date 2016
  *
- * Reference: https://github.com/ethereum/go-ethereum/blob/swarm/internal/web3ext/web3ext.go#L33
+ * Reference: https://github.com/cypherium/go-cypherium/blob/swarm/internal/web3ext/web3ext.go#L33
  */
 
 "use strict";
@@ -6134,8 +6108,8 @@ module.exports = Swarm;
 
 var Method = require('../method');
 
-/// @returns an array of objects describing web3.eth.filter api methods
-var eth = function () {
+/// @returns an array of objects describing web3.cph.filter api methods
+var cph = function () {
     var newFilterCall = function (args) {
         var type = args[0];
 
@@ -6143,13 +6117,13 @@ var eth = function () {
             case 'latest':
                 args.shift();
                 this.params = 0;
-                return 'eth_newBlockFilter';
+                return 'cph_newBlockFilter';
             case 'pending':
                 args.shift();
                 this.params = 0;
-                return 'eth_newPendingTransactionFilter';
+                return 'cph_newPendingTransactionFilter';
             default:
-                return 'eth_newFilter';
+                return 'cph_newFilter';
         }
     };
 
@@ -6161,19 +6135,19 @@ var eth = function () {
 
     var uninstallFilter = new Method({
         name: 'uninstallFilter',
-        call: 'eth_uninstallFilter',
+        call: 'cph_uninstallFilter',
         params: 1
     });
 
     var getLogs = new Method({
         name: 'getLogs',
-        call: 'eth_getFilterLogs',
+        call: 'cph_getFilterLogs',
         params: 1
     });
 
     var poll = new Method({
         name: 'poll',
-        call: 'eth_getFilterChanges',
+        call: 'cph_getFilterChanges',
         params: 1
     });
 
@@ -6213,7 +6187,7 @@ var shh = function () {
 };
 
 module.exports = {
-    eth: eth,
+    cph: cph,
     shh: shh
 };
 
@@ -6439,7 +6413,7 @@ var errors = require('./errors');
 
 /**
  * It's responsible for passing messages to providers
- * It's also responsible for polling the ethereum node for incoming messages
+ * It's also responsible for polling the cypherium node for incoming messages
  * Default poll timeout is 1 second
  * Singleton
  */
@@ -6603,7 +6577,7 @@ RequestManager.prototype.reset = function (keepIsSyncing) {
  */
 RequestManager.prototype.poll = function () {
     /*jshint maxcomplexity: 6 */
-    this.timeout = setTimeout(this.poll.bind(this), c.ETH_POLLING_TIMEOUT);
+    this.timeout = setTimeout(this.poll.bind(this), c.CPH_POLLING_TIMEOUT);
 
     if (Object.keys(this.polls).length === 0) {
         return;
@@ -6747,7 +6721,7 @@ var pollSyncing = function(self) {
     };
 
     self.requestManager.startPolling({
-        method: 'eth_syncing',
+        method: 'cph_syncing',
         params: [],
     }, self.pollId, onMessage, self.stopWatching.bind(self));
 
@@ -6813,23 +6787,23 @@ var exchangeAbi = require('../contracts/SmartExchange.json');
  * @param {Value} value to be tranfered
  * @param {Function} callback, callback
  */
-var transfer = function (eth, from, to, value, callback) {
+var transfer = function (cph, from, to, value, callback) {
     var iban = new Iban(to); 
     if (!iban.isValid()) {
         throw new Error('invalid iban address');
     }
 
     if (iban.isDirect()) {
-        return transferToAddress(eth, from, iban.address(), value, callback);
+        return transferToAddress(cph, from, iban.address(), value, callback);
     }
     
     if (!callback) {
-        var address = eth.icapNamereg().addr(iban.institution());
-        return deposit(eth, from, address, value, iban.client());
+        var address = cph.icapNamereg().addr(iban.institution());
+        return deposit(cph, from, address, value, iban.client());
     }
 
-    eth.icapNamereg().addr(iban.institution(), function (err, address) {
-        return deposit(eth, from, address, value, iban.client(), callback);
+    cph.icapNamereg().addr(iban.institution(), function (err, address) {
+        return deposit(cph, from, address, value, iban.client(), callback);
     });
     
 };
@@ -6843,8 +6817,8 @@ var transfer = function (eth, from, to, value, callback) {
  * @param {Value} value to be tranfered
  * @param {Function} callback, callback
  */
-var transferToAddress = function (eth, from, to, value, callback) {
-    return eth.sendTransaction({
+var transferToAddress = function (cph, from, to, value, callback) {
+    return cph.sendTransaction({
         address: to,
         from: from,
         value: value
@@ -6861,9 +6835,9 @@ var transferToAddress = function (eth, from, to, value, callback) {
  * @param {String} client unique identifier
  * @param {Function} callback, callback
  */
-var deposit = function (eth, from, to, value, client, callback) {
+var deposit = function (cph, from, to, value, client, callback) {
     var abi = exchangeAbi;
-    return eth.contract(abi).at(to).deposit(client, {
+    return cph.contract(abi).at(to).deposit(client, {
         from: from,
         value: value
     }, callback);
